@@ -21,7 +21,6 @@
         "nickcernis/html-to-markdown": "dev-master"
     },
     "require-dev": {
-        "php": ">=5.3.3",
-        "phpunit/phpunit": "3.7.0"
+        "php": ">=5.3.3"
     }
 }
