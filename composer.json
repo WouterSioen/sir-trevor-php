@@ -1,0 +1,27 @@
+{
+    "name": "woutersioen/sir-trevor-php",
+    "type": "library",
+    "description": "A Sir Trevor to HTML conversion helper for PHP",
+    "keywords": ["Sir Trevor", "html"],
+    "homepage": "https://github.com/woutersioen/sir-trevor-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wouter Sioen",
+            "email": "info@woutersioen.be",
+            "homepage": "http://woutersioen.be"
+        }
+    ],
+    "autoload": {
+        "classmap": [ "Converter.php" ]
+    },
+    "require": {
+        "php": ">=5.2",
+        "michelf/php-markdown": "1.3.*@dev",
+        "nickcernis/html-to-markdown": "dev-master"
+    },
+    "require-dev": {
+        "php": ">=5.3.3",
+        "phpunit/phpunit": "3.7.0"
+    }
+}
