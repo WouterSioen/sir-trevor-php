@@ -1,4 +1,5 @@
 <?php
+
 require_once 'vendor/autoload.php';
 
 use \Michelf\Markdown;
@@ -14,23 +15,23 @@ use \Michelf\Markdown;
  */
 class Converter
 {
-	/**
-	 * Converts the outputted json from Sir Trevor to html
-	 * 
-	 * @param string $json
-	 * @return string html
-	 */
-	public function toHtml($json)
-	{
+    /**
+     * Converts the outputted json from Sir Trevor to html
+     * 
+     * @param string $json
+     * @return string html
+     */
+    public function toHtml($json)
+    {
 
-	}
+    }
 
-	/**
-	 * @param string $text
-	 * @return string $html
-	 */
-	public function defaultToHtml($text)
-	{
-		return Markdown::defaultTransform($text);
-	}
+    /**
+     * @param string $text
+     * @return string $html
+     */
+    public function defaultToHtml($text)
+    {
+        return Markdown::defaultTransform($text);
+    }
 }
