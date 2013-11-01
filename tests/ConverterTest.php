@@ -19,4 +19,12 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $html = $converter->defaultToHtml("test\n\nline2");
         $this->assertEquals($html, "<p>test</p>\n\n<p>line2</p>\n");
     }
+
+    public function testHeaderToHtml()
+    {
+        $converter = new Converter();
+
+        $html = $converter->headerToHtml('Heading');
+        $this->assertEquals($html, "<h2>Heading</h2>\n");
+    }
 }

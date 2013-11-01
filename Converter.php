@@ -27,11 +27,24 @@ class Converter
     }
 
     /**
+     * Converts default elements to html
+     *
      * @param string $text
      * @return string $html
      */
     public function defaultToHtml($text)
     {
         return Markdown::defaultTransform($text);
+    }
+
+    /**
+     * Converts headers to html
+     *
+     * @param string $text
+     * @return string $html
+     */
+    public function headerToHtml($text)
+    {
+        return Markdown::defaultTransform('## ' . $text);
     }
 }
