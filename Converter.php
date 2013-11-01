@@ -7,7 +7,7 @@ use \Michelf\Markdown;
 /**
  * Class Converter
  *
- * An Sir Trevor to HTML conversion helper for PHP
+ * A Sir Trevor to HTML conversion helper for PHP
  *
  * @version 1.0.0
  * @author Wouter Sioen <info@woutersioen.be>
