@@ -94,6 +94,7 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<p>test</p>\n");
 
+        // the embedly conversion is a little bit nastier
         $json = 
 '{"data": [{
   "type":"embedly",
@@ -120,5 +121,14 @@ class ConverterTest extends PHPUnit_Framework_TestCase
             $html,
             "<iframe width=\"640\" height=\"480\" src=\"http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed\" frameborder=\"0\" allowfullscreen></iframe>\n"
         );
+
+        // The heading
+        $json = 
+'{"data": [{
+  "type": "heading",
+  "data": { "text": "test" }
+}]}';
+        $html = $converter->toHtml($json);
+        $this->assertEquals($html, "<h2>test</h2>\n");
     }
 }
