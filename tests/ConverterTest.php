@@ -151,6 +151,20 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testListToJson()
+    {
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->listToJson('<ul><li>1</li><li>2</li></ul>'),
+            array(
+                'type' => 'list',
+                'data' => array(
+                    'text' => " - 1\n - 2"
+                )
+            )
+        );
+    }
+
     public function testParagraphToJson()
     {
         $converter = new Converter();

@@ -145,6 +145,28 @@ class Converter
     }
 
     /**
+     * Converts lists to the json format
+     * 
+     * @param $text
+     * @return array
+     */
+    public function listToJson($html)
+    {
+        $markdown = new HTML_To_Markdown($html);
+        $markdown = $markdown->output();
+
+        // we need a space in the beginnen of each line
+        $markdown = ' ' . str_replace("\n", "\n ", $markdown);
+
+        return array(
+            'type' => 'list',
+            'data' => array(
+                'text' => $markdown
+            )
+        );
+    }
+
+    /**
      * Converts paragraphs to the json format
      * 
      * @param $text
