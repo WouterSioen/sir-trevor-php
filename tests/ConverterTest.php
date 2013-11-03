@@ -72,5 +72,9 @@ class ConverterTest extends PHPUnit_Framework_TestCase
 }]}';
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<p>test</p>\n");
+
+        $json = '{"data":[{"type":"embedly","data":{"provider_url":"http://www.youtube.com/","description":"For more articles and videos subscribe to my YouTube channel or visit http://weblogs.asp.net/dwahlin. In this video you\'ll learn how to get started with the AngularJS SPA framework. First you\'ll be introduced to what a SPA is and AngularJS features that simplify building SPAs. From there you\'ll see how to use directives, filters and data binding techniques.","title":"AngularJS Fundamentals In 60-ish Minutes","url":"http://www.youtube.com/watch?v=i9MHigUZKEM","author_name":"Dan Wahlin","height":480,"thumbnail_width":480,"width":640,"html":"<iframe width=\"640\" height=\"480\" src=\"http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed\" frameborder=\"0\" allowfullscreen></iframe>","author_url":"http://www.youtube.com/user/dwahlin","version":"1.0","provider_name":"YouTube","thumbnail_url":"http://i1.ytimg.com/vi/i9MHigUZKEM/hqdefault.jpg","type":"video","thumbnail_height":360}}]}';
+        $html = $converter->toHtml($json);
+        $this->assertEquals($html, '<iframe width="640" height="480" src="http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed" frameborder="0" allowfullscreen></iframe>');
     }
 }

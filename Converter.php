@@ -62,6 +62,20 @@ class Converter
     }
 
     /**
+     * Converts embedly block to html
+     * 
+     * @param string $text
+     * @return string
+     */
+    public function embedlyToHtml()
+    {
+        // we know this is the 8th argument. This is a bit nasty, but should
+        // do the trick for now.
+        $arguments = func_get_args();
+        return $arguments[8];
+    }
+
+    /**
      * Converts headers to html
      *
      * @param string $text
