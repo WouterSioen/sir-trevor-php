@@ -27,4 +27,21 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $html = $converter->headerToHtml('Heading');
         $this->assertEquals($html, "<h2>Heading</h2>\n");
     }
+
+    public function testQuoteToHtml()
+    {
+        $converter = new Converter();
+
+        // with cite
+        $html = $converter->quoteToHtml('Text', 'Cite');
+        $this->assertEquals($html, "<blockquote><p>Text</p>\n<cite><p>Cite</p>\n</cite></blockquote>");
+
+        // without cite
+        $html = $converter->quoteToHtml('Text');
+        $this->assertEquals($html, "<blockquote><p>Text</p>\n</blockquote>");
+
+        // with empty cite
+        $html = $converter->quoteToHtml('Text', '');
+        $this->assertEquals($html, "<blockquote><p>Text</p>\n</blockquote>");
+    }
 }
