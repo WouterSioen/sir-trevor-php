@@ -131,4 +131,37 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<h2>test</h2>\n");
     }
+
+    public function testToJson()
+    {
+
+    }
+
+    public function testHeadingToJson()
+    {
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->headingToJson('<h2>Test</h2>'),
+            array(
+                'type' => 'heading',
+                'data' => array(
+                    'text' => ' Test'
+                )
+            )
+        );
+    }
+
+    public function testParagraphToJson()
+    {
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->paragraphToJson('<p>Test</p>'),
+            array(
+                'type' => 'text',
+                'data' => array(
+                    'text' => ' Test'
+                )
+            )
+        );
+    }
 }

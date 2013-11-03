@@ -111,4 +111,56 @@ class Converter
         $html .= '</blockquote>';
         return $html;
     }
+
+    /**
+     * Converts html to the json Sir Trevor requires
+     * 
+     * @param string $html
+     * @return string The json string
+     */
+    public function toJson($html)
+    {
+
+    }
+
+    /**
+     * Converts headings to the json format
+     * 
+     * @param $text
+     * @return array
+     */
+    public function headingToJson($html)
+    {
+        // remove the h2 tags from the text. We just need the inner text.
+        $html = preg_replace('/<(\/|)h2>/i', '', $html);
+        $markdown = new HTML_To_Markdown($html);
+        $markdown = ' ' . $markdown->output();
+
+        return array(
+            'type' => 'heading',
+            'data' => array(
+                'text' => $markdown
+            )
+        );
+    }
+
+    /**
+     * Converts paragraphs to the json format
+     * 
+     * @param $text
+     * @return array
+     */
+    public function paragraphToJson($html)
+    {
+        // convert the html to markdown. That's all we need
+        $markdown = new HTML_To_Markdown($html);
+        $markdown = ' ' . $markdown->output();
+
+        return array(
+            'type' => 'text',
+            'data' => array(
+                'text' => $markdown
+            )
+        );
+    }
 }
