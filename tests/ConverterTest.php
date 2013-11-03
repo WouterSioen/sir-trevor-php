@@ -20,11 +20,11 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($html, "<p>test</p>\n\n<p>line2</p>\n");
     }
 
-    public function testHeaderToHtml()
+    public function testHeadingToHtml()
     {
         $converter = new Converter();
 
-        $html = $converter->headerToHtml('Heading');
+        $html = $converter->headingToHtml('Heading');
         $this->assertEquals($html, "<h2>Heading</h2>\n");
     }
 

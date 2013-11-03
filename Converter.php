@@ -81,7 +81,7 @@ class Converter
      * @param string $text
      * @return string
      */
-    public function headerToHtml($text)
+    public function headingToHtml($text)
     {
         return Markdown::defaultTransform('## ' . $text);
     }
