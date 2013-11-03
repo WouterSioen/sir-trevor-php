@@ -25,10 +25,9 @@ class Converter
     {
         // convert the json to an associative array
         $input = json_decode($json, true);
-
         $html = '';
 
-        // loop trough the parts
+        // loop trough the data blocks
         foreach($input['data'] as $block)
         {
             // check if we have a converter for this type
@@ -40,6 +39,11 @@ class Converter
                     array(__CLASS__, $converter),
                     $block['data']
                 );
+            }
+            elseif(array_key_exists('text', $block['data']))
+            {
+                // we have a text block. Let's just try the default converter
+                $html .= $this->defaultToHtml($block['data']['text']);
             }
         }
 

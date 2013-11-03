@@ -54,19 +54,23 @@ class ConverterTest extends PHPUnit_Framework_TestCase
 
         // let's try a basic json
         $json = 
-'{
-  "data": [{
-    "type": "quote",
-    "data": {
-      "text": "Text",
-      "cite": "Cite"
-    }
-  }]
-}';
+'{"data": [{
+  "type": "quote",
+  "data": { "text": "Text", "cite": "Cite" }
+}]}';
         $html = $converter->toHtml($json);
         $this->assertEquals(
             $html,
             "<blockquote><p>Text</p>\n<cite><p>Cite</p>\n</cite></blockquote>"
         );
+
+        // Lets convert a normal text type that uses the default converter
+        $json = 
+'{"data": [{
+  "type": "text",
+  "data": { "text": "test" }
+}]}';
+        $html = $converter->toHtml($json);
+        $this->assertEquals($html, "<p>test</p>\n");
     }
 }
