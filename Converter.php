@@ -76,7 +76,7 @@ class Converter
      * Converts quotes to html
      * 
      * @param string $text
-     * @param string $cite
+     * @param string[optional] $cite
      * @return string
      */
     public function quoteToHtml($text, $cite = null)
