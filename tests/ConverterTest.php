@@ -34,7 +34,10 @@ class ConverterTest extends PHPUnit_Framework_TestCase
 
         // with cite
         $html = $converter->quoteToHtml('Text', 'Cite');
-        $this->assertEquals($html, "<blockquote><p>Text</p>\n<cite><p>Cite</p>\n</cite></blockquote>");
+        $this->assertEquals(
+            $html,
+            "<blockquote><p>Text</p>\n<cite><p>Cite</p>\n</cite></blockquote>"
+        );
 
         // without cite
         $html = $converter->quoteToHtml('Text');
