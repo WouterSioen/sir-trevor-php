@@ -101,9 +101,7 @@ class Converter
         // Add the cit if necessary
         if(!empty($cite))
         {
-            $html .= '<cite>';
-            $html .= Markdown::defaultTransform($cite);
-            $html .= '</cite>';
+            $html .= '<cite>' . Markdown::defaultTransform($cite) . '</cite>';
         }
 
         $html .= '</blockquote>';
