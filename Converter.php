@@ -72,7 +72,7 @@ class Converter
         // we know this is the 8th argument. This is a bit nasty, but should
         // do the trick for now.
         $arguments = func_get_args();
-        return $arguments[8];
+        return $arguments[8] . "\n";
     }
 
     /**
