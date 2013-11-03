@@ -3,4 +3,7 @@ php:
   - "5.5"
   - "5.4"
   - "5.3"
-script: phpunit ./tests
+script: 
+  - wget http://getcomposer.org/composer.phar
+  - php composer.phar install
+  - phpunit ./tests
