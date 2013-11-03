@@ -23,7 +23,27 @@ class Converter
      */
     public function toHtml($json)
     {
+        // convert the json to an associative array
+        $input = json_decode($json, true);
 
+        $html = '';
+
+        // loop trough the parts
+        foreach($input['data'] as $block)
+        {
+            // check if we have a converter for this type
+            $converter = $block['type'] . 'ToHtml';
+            if(is_callable(array(__CLASS__, $converter)))
+            {
+                // call the function and add the data as parameters
+                $html .= call_user_func_array(
+                    array(__CLASS__, $converter),
+                    $block['data']
+                );
+            }
+        }
+
+        return $html;
     }
 
     /**

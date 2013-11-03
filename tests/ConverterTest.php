@@ -47,4 +47,26 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $html = $converter->quoteToHtml('Text', '');
         $this->assertEquals($html, "<blockquote><p>Text</p>\n</blockquote>");
     }
+
+    public function testToHtml()
+    {
+        $converter = new Converter();
+
+        // let's try a basic json
+        $json = 
+'{
+  "data": [{
+    "type": "quote",
+    "data": {
+      "text": "Text",
+      "cite": "Cite"
+    }
+  }]
+}';
+        $html = $converter->toHtml($json);
+        $this->assertEquals(
+            $html,
+            "<blockquote><p>Text</p>\n<cite><p>Cite</p>\n</cite></blockquote>"
+        );
+    }
 }
