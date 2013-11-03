@@ -28,6 +28,27 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($html, "<h2>Heading</h2>\n");
     }
 
+    public function testEmbedlyToHtml()
+    {
+        $converter = new Converter();
+
+        $html = $converter->embedlyToHtml(
+            'http://www.youtube.com/',
+            'In this video you\'ll learn how to get started with the AngularJS SPA framework.',
+            'AngularJS Fundamentals In 60-ish Minutes',
+            'http://www.youtube.com/watch?v=i9MHigUZKEM',
+            'Dan Wahlin', 480, 480, 640,
+            '<iframe width="640" height="480" src="http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed" frameborder="0" allowfullscreen></iframe>',
+            'http://www.youtube.com/user/dwahlin',
+            '1.0', 'YouTube', 'http://i1.ytimg.com/vi/i9MHigUZKEM/hqdefault.jpg',
+            'video', 360
+        );
+        $this->assertEquals(
+            $html,
+            "<iframe width=\"640\" height=\"480\" src=\"http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed\" frameborder=\"0\" allowfullscreen></iframe>\n"
+        );
+    }
+
     public function testQuoteToHtml()
     {
         $converter = new Converter();
