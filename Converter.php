@@ -45,6 +45,10 @@ class Converter
                 // we have a text block. Let's just try the default converter
                 $html .= $this->defaultToHtml($block['data']['text']);
             }
+            else
+            {
+                throw new Exception('Can\t convert type ' . $block['type'] . '.');
+            }
         }
 
         return $html;
@@ -63,8 +67,8 @@ class Converter
 
     /**
      * Converts embedly block to html
+     * Parameters are send as an array fetched from the json data
      * 
-     * @param string $text
      * @return string
      */
     public function embedlyToHtml()
