@@ -148,6 +148,9 @@ class Converter
                 case 'ul':
                     $data[] = $this->listToJson($html);
                     break;
+                case 'blockquote':
+                    $data[] = $this->quoteToJson($node);
+                    break;
                 default:
                     break;
             }
@@ -159,7 +162,7 @@ class Converter
     /**
      * Converts headings to the json format
      * 
-     * @param $text
+     * @param $html
      * @return array
      */
     public function headingToJson($html)
@@ -180,7 +183,7 @@ class Converter
     /**
      * Converts lists to the json format
      * 
-     * @param $text
+     * @param $html
      * @return array
      */
     public function listToJson($html)
@@ -202,7 +205,7 @@ class Converter
     /**
      * Converts paragraphs to the json format
      * 
-     * @param $text
+     * @param $html
      * @return array
      */
     public function paragraphToJson($html)
@@ -215,6 +218,45 @@ class Converter
             'type' => 'text',
             'data' => array(
                 'text' => $markdown
+            )
+        );
+    }
+
+    /**
+     * Converts quotes to the json format
+     * 
+     * @param $node The node is send to check if it contains a cite
+     * @return array
+     */
+    public function quoteToJson($node)
+    {
+        // check if the quote contains a cite
+        $cite = '';
+
+        foreach($node->childNodes as $child)
+        {
+            // if it contains a 'cite' node, we should add it in the cite property
+            if($child->nodeName == 'cite')
+            {
+                $html = $child->ownerDocument->saveXML($child);
+                $html = preg_replace('/<(\/|)cite>/i', '', $html);
+                $child->parentNode->removeChild($child);
+                $cite = new HTML_To_Markdown($html);
+                $cite = ' ' . $cite->output();
+            }
+        }
+
+        // we use the remaining html to create the remaining text
+        $html = $node->ownerDocument->saveXML($node);
+        $html = preg_replace('/<(\/|)blockquote>/i', '', $html);
+        $markdown = new HTML_To_Markdown($html);
+        $markdown = ' ' . $markdown->output();
+
+        return array(
+            'type' => 'quote',
+            'data' => array(
+                'text' => $markdown,
+                'cite' => $cite
             )
         );
     }
