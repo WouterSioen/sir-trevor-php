@@ -134,7 +134,11 @@ class ConverterTest extends PHPUnit_Framework_TestCase
 
     public function testToJson()
     {
-
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->toJson('<h2>Test</h2>'),
+            '{"data":[{"type":"heading","data":{"text":" Test"}}]}'
+        );
     }
 
     public function testHeadingToJson()

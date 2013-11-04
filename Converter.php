@@ -120,7 +120,40 @@ class Converter
      */
     public function toJson($html)
     {
+        // Strip white space between tags to prevent creation of empty #text nodes
+        $html = preg_replace('~>\s+<~', '><', $html);
+        $this->document = new DOMDocument();
 
+        // Load UTF-8 HTML hack (from http://bit.ly/pVDyCt)
+        $this->document->loadHTML('<?xml encoding="UTF-8">' . $html);
+        $this->document->encoding = 'UTF-8';
+
+        // fetch the body of the document. All html is stored in there
+        $body = $this->document->getElementsByTagName("body")->item(0);
+
+        $data = array();
+
+        // loop trough the child nodes and convert them
+        foreach($body->childNodes as $node)
+        {
+            $html = $node->ownerDocument->saveXML($node);
+            switch($node->nodeName)
+            {
+                case 'p':
+                    $data[] = $this->paragraphToJson($html);
+                    break;
+                case 'h2':
+                    $data[] = $this->headingToJson($html);
+                    break;
+                case 'ul':
+                    $data[] = $this->listToJson($html);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return json_encode(array('data' => $data));
     }
 
     /**
