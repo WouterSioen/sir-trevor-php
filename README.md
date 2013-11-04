@@ -12,6 +12,17 @@ and converts it to HTML. In the future, the conversion from HTML to the
 Json input Sir Trevor needs will be implemented too.
 
 
+### Supported Sir Trevor blocks
+
+ - Heading
+ - Paragraph
+ - List
+ - Embedly
+ - Quote
+
+More coming soon
+
+
 Requirement
 -----------
 
