@@ -50,9 +50,19 @@ Then `composer install` and add `require 'vendor/autoload.php';` to the top of y
 Usage
 -----
 
+### Conversion to HTML
+
     // fetch the data from the post
     $sirTrevorInput = $_POST['textarea'];
 
     // create a converter object and handle the input
     $converter = new Converter();
     $html = $converter->toHtml($sirTrevorInput);
+
+### Conversion to Json
+
+    // fetch html from database or wherever you want to fetch it from
+    $html = '<h2>This is my html</h2>';
+
+    // create a converter object and handle the output
+    $json = $converter->toJson($html);
