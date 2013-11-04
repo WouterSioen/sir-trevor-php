@@ -73,10 +73,13 @@ class Converter
      */
     public function embedlyToHtml()
     {
-        // we know this is the 8th argument. This is a bit nasty, but should
-        // do the trick for now.
+        // Get the argument containing an iframe
         $arguments = func_get_args();
-        return $arguments[8] . "\n";
+
+        foreach($arguments as $value)
+        {
+            if(substr($value, 0, 7) === '<iframe') return $value . "\n";
+        }
     }
 
     /**
@@ -153,6 +156,9 @@ class Converter
                 case 'blockquote':
                     $data[] = $this->quoteToJson($node);
                     break;
+                case 'iframe':
+                    $data[] = $this->iframeToJson($html);
+                    break;
                 default:
                     break;
             }
@@ -178,6 +184,22 @@ class Converter
             'type' => 'heading',
             'data' => array(
                 'text' => $markdown
+            )
+        );
+    }
+
+    /**
+     * Converts an iframe to the array Embedly needs
+     * 
+     * @param $html
+     * @return array
+     */
+    public function iframeToJson($html)
+    {
+        return array(
+            'type' => 'embedly',
+            'data' => array(
+                'html' => $html,
             )
         );
     }

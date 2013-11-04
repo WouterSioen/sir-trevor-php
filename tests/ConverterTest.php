@@ -194,7 +194,17 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testQuoteToJson()
+    public function testIframeToJson()
     {
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->iframeToJson('<iframe src="http://google.be"></iframe>'),
+            array(
+                'type' => 'embedly',
+                'data' => array(
+                    'html' => '<iframe src="http://google.be"></iframe>'
+                )
+            )
+        );
     }
 }
