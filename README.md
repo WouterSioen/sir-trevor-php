@@ -65,4 +65,5 @@ Usage
     $html = '<h2>This is my html</h2>';
 
     // create a converter object and handle the output
+    $converter = new Converter();
     $json = $converter->toJson($html);
