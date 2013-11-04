@@ -102,9 +102,11 @@ class Converter
         $html = '<blockquote>';
         $html .= Markdown::defaultTransform($text);
 
-        // Add the cit if necessary
+        // Add the cite if necessary
         if(!empty($cite))
         {
+            // remove the indent thats added by Sir Trevor
+            $cite = ltrim($cite, '>');
             $html .= '<cite>' . Markdown::defaultTransform($cite) . '</cite>';
         }
 
