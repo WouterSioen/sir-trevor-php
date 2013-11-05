@@ -24,8 +24,8 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($html, "<p>test <em>italic</em> test</p>\n");
 
         // test with bold
-        $html = $converter->defaultToHtml('test __italic__ test');
-        $this->assertEquals($html, "<p>test <strong>italic</strong> test</p>\n");
+        $html = $converter->defaultToHtml('test __bold__ test');
+        $this->assertEquals($html, "<p>test <strong>bold</strong> test</p>\n");
     }
 
     public function testHeadingToHtml()
@@ -197,6 +197,28 @@ class ConverterTest extends PHPUnit_Framework_TestCase
                 'type' => 'text',
                 'data' => array(
                     'text' => ' Test'
+                )
+            )
+        );
+
+        // with em tags
+        $this->assertEquals(
+            $converter->paragraphToJson('<p>test <em>italic</em> test</p>'),
+            array(
+                'type' => 'text',
+                'data' => array(
+                    'text' => ' test _italic_ test'
+                )
+            )
+        );
+
+        // with strong tags
+        $this->assertEquals(
+            $converter->paragraphToJson('<p>test <strong>bold</strong> test</p>'),
+            array(
+                'type' => 'text',
+                'data' => array(
+                    'text' => ' test __bold__ test'
                 )
             )
         );
