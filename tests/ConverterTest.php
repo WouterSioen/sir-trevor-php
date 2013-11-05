@@ -18,6 +18,14 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         // two paragraphs
         $html = $converter->defaultToHtml("test\n\nline2");
         $this->assertEquals($html, "<p>test</p>\n\n<p>line2</p>\n");
+
+        // test with italic
+        $html = $converter->defaultToHtml('test _italic_ test');
+        $this->assertEquals($html, "<p>test <em>italic</em> test</p>\n");
+
+        // test with bold
+        $html = $converter->defaultToHtml('test __italic__ test');
+        $this->assertEquals($html, "<p>test <strong>italic</strong> test</p>\n");
     }
 
     public function testHeadingToHtml()
