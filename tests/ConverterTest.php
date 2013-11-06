@@ -77,6 +77,13 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($html, "<blockquote><p>Text</p>\n</blockquote>");
     }
 
+    public function testImageToHtml()
+    {
+        $converter = new Converter();
+        $html = $converter->imageToHtml(array('url' => '/path/to/img.jpg'));
+        $this->assertEquals($html, '<img src="/path/to/img.jpg" />' . "\n");
+    }
+
     public function testToHtml()
     {
         $converter = new Converter();
@@ -138,27 +145,16 @@ class ConverterTest extends PHPUnit_Framework_TestCase
 }]}';
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<h2>test</h2>\n");
+
+        // images
+        $json = '{"data":[{"type":"image","data":{"file":{"url":"/frontend/files/sir-trevor/images/IMG_3867.JPG"}}}]}';
+        $html = $converter->toHtml($json);
+        $this->assertEquals($html, "<img src=\"/frontend/files/sir-trevor/images/IMG_3867.JPG\" />\n");
     }
 
-    public function testToJson()
-    {
-        $converter = new Converter();
-        $this->assertEquals(
-            $converter->toJson('<h2>Test</h2>'),
-            '{"data":[{"type":"heading","data":{"text":" Test"}}]}'
-        );
-
-        // a quote
-        $this->assertEquals(
-            $converter->toJson('<blockquote><p>Text</p><cite>Cite</cite></blockquote>'),
-            '{"data":[{"type":"quote","data":{"text":" Text","cite":" Cite"}}]}'
-        );
-
-        $this->assertEquals(
-            $converter->toJson('<blockquote><p>Text</p></blockquote>'),
-            '{"data":[{"type":"quote","data":{"text":" Text","cite":""}}]}'
-        );
-    }
+    /*
+        Down here is the html to json conversion
+    */
 
     public function testHeadingToJson()
     {
@@ -235,6 +231,47 @@ class ConverterTest extends PHPUnit_Framework_TestCase
                     'html' => '<iframe src="http://google.be"></iframe>'
                 )
             )
+        );
+    }
+
+    public function testImageToJson()
+    {
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->imageToJson('/path/to/img.jpg'),
+            array(
+                'type' => 'image',
+                'data' => array(
+                    'file' => array(
+                        'url' => '/path/to/img.jpg'
+                    )
+                )
+            )
+        );
+    }
+
+    public function testToJson()
+    {
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->toJson('<h2>Test</h2>'),
+            '{"data":[{"type":"heading","data":{"text":" Test"}}]}'
+        );
+
+        // a quote
+        $this->assertEquals(
+            $converter->toJson('<blockquote><p>Text</p><cite>Cite</cite></blockquote>'),
+            '{"data":[{"type":"quote","data":{"text":" Text","cite":" Cite"}}]}'
+        );
+
+        $this->assertEquals(
+            $converter->toJson('<blockquote><p>Text</p></blockquote>'),
+            '{"data":[{"type":"quote","data":{"text":" Text","cite":""}}]}'
+        );
+
+        $this->assertEquals(
+            $converter->toJson('<img src="/path/to/img.jpg" />'),
+            '{"data":[{"type":"image","data":{"file":{"url":"\/path\/to\/img.jpg"}}}]}'
         );
     }
 }

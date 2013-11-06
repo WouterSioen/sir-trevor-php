@@ -19,6 +19,7 @@ Json input Sir Trevor needs will be implemented too.
  - List
  - Embedly
  - Quote
+ - Image
 
 More coming soon
 

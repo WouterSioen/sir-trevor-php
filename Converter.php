@@ -129,6 +129,17 @@ class Converter
     }
 
     /**
+     * Converts the image to html
+     * 
+     * @param array $file
+     * @return string
+     */
+    public function imageToHtml($file)
+    {
+        return '<img src="' . $file['url'] . '" />' . "\n";
+    }
+
+    /**
      * Converts html to the json Sir Trevor requires
      * 
      * @param string $html
@@ -170,6 +181,9 @@ class Converter
                 case 'iframe':
                     $data[] = $this->iframeToJson($html);
                     break;
+                case 'img':
+                    $src = $node->getAttribute('src');
+                    $data[] = $this->imageToJson($src);
                 default:
                     break;
             }
@@ -292,6 +306,24 @@ class Converter
             'data' => array(
                 'text' => $markdown,
                 'cite' => $cite
+            )
+        );
+    }
+
+    /**
+     * Converts images to html
+     * 
+     * @param string $url
+     * @return array
+     */
+    public static function imageToJson($url)
+    {
+        return array(
+            'type' => 'image',
+            'data' => array(
+                'file' => array(
+                    'url' => $url
+                )
             )
         );
     }
