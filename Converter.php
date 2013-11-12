@@ -161,31 +161,34 @@ class Converter
         $data = array();
 
         // loop trough the child nodes and convert them
-        foreach($body->childNodes as $node)
+        if($body)
         {
-            $html = $node->ownerDocument->saveXML($node);
-            switch($node->nodeName)
+            foreach($body->childNodes as $node)
             {
-                case 'p':
-                    $data[] = $this->paragraphToJson($html);
-                    break;
-                case 'h2':
-                    $data[] = $this->headingToJson($html);
-                    break;
-                case 'ul':
-                    $data[] = $this->listToJson($html);
-                    break;
-                case 'blockquote':
-                    $data[] = $this->quoteToJson($node);
-                    break;
-                case 'iframe':
-                    $data[] = $this->iframeToJson($html);
-                    break;
-                case 'img':
-                    $src = $node->getAttribute('src');
-                    $data[] = $this->imageToJson($src);
-                default:
-                    break;
+                $html = $node->ownerDocument->saveXML($node);
+                switch($node->nodeName)
+                {
+                    case 'p':
+                        $data[] = $this->paragraphToJson($html);
+                        break;
+                    case 'h2':
+                        $data[] = $this->headingToJson($html);
+                        break;
+                    case 'ul':
+                        $data[] = $this->listToJson($html);
+                        break;
+                    case 'blockquote':
+                        $data[] = $this->quoteToJson($node);
+                        break;
+                    case 'iframe':
+                        $data[] = $this->iframeToJson($html);
+                        break;
+                    case 'img':
+                        $src = $node->getAttribute('src');
+                        $data[] = $this->imageToJson($src);
+                    default:
+                        break;
+                }
             }
         }
 
