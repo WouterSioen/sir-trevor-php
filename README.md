@@ -17,7 +17,7 @@ Json input Sir Trevor needs will be implemented too.
  - Heading
  - Paragraph
  - List
- - Embedly
+ - Video
  - Quote
  - Image
 

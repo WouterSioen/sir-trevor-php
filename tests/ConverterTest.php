@@ -36,24 +36,17 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($html, "<h2>Heading</h2>\n");
     }
 
-    public function testEmbedlyToHtml()
+    public function testVideoToHtml()
     {
         $converter = new Converter();
 
-        $html = $converter->embedlyToHtml(
-            'http://www.youtube.com/',
-            'In this video you\'ll learn how to get started with the AngularJS SPA framework.',
-            'AngularJS Fundamentals In 60-ish Minutes',
-            'http://www.youtube.com/watch?v=i9MHigUZKEM',
-            'Dan Wahlin', 480, 480, 640,
-            '<iframe width="640" height="480" src="http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed" frameborder="0" allowfullscreen></iframe>',
-            'http://www.youtube.com/user/dwahlin',
-            '1.0', 'YouTube', 'http://i1.ytimg.com/vi/i9MHigUZKEM/hqdefault.jpg',
-            'video', 360
+        $html = $converter->videoToHtml(
+            'youtube',
+            '4BXpi7056RM'
         );
         $this->assertEquals(
             $html,
-            "<iframe width=\"640\" height=\"480\" src=\"http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed\" frameborder=\"0\" allowfullscreen></iframe>\n"
+            "<iframe src=\"//www.youtube.com/embed/4BXpi7056RM?rel=0\" frameborder=\"0\" allowfullscreen></iframe>\n"
         );
     }
 
@@ -112,29 +105,16 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         // the embedly conversion is a little bit nastier
         $json = 
 '{"data": [{
-  "type":"embedly",
+  "type":"video",
   "data": {
-    "provider_url":"http://www.youtube.com/",
-    "description":"In this video you\'ll learn how to get started with the AngularJS SPA framework.",
-    "title":"AngularJS Fundamentals In 60-ish Minutes",
-    "url":"http://www.youtube.com/watch?v=i9MHigUZKEM",
-    "author_name":"Dan Wahlin",
-    "height":480,
-    "thumbnail_width":480,
-    "width":640,
-    "html":"<iframe width=\"640\" height=\"480\" src=\"http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed\" frameborder=\"0\" allowfullscreen></iframe>",
-    "author_url":"http://www.youtube.com/user/dwahlin",
-    "version":"1.0",
-    "provider_name":"YouTube",
-    "thumbnail_url":"http://i1.ytimg.com/vi/i9MHigUZKEM/hqdefault.jpg",
-    "type":"video",
-    "thumbnail_height":360
+    "source":"youtube",
+    "remote_id":"4BXpi7056RM"
   }
 }]}';
         $html = $converter->toHtml($json);
         $this->assertEquals(
             $html,
-            "<iframe width=\"640\" height=\"480\" src=\"http://www.youtube.com/embed/i9MHigUZKEM?feature=oembed\" frameborder=\"0\" allowfullscreen></iframe>\n"
+            "<iframe src=\"//www.youtube.com/embed/4BXpi7056RM?rel=0\" frameborder=\"0\" allowfullscreen></iframe>\n"
         );
 
         // The heading
@@ -224,11 +204,24 @@ class ConverterTest extends PHPUnit_Framework_TestCase
     {
         $converter = new Converter();
         $this->assertEquals(
-            $converter->iframeToJson('<iframe src="http://google.be"></iframe>'),
+            $converter->iframeToJson('<iframe src="//www.youtube.com/embed/4BXpi7056RM?rel=0" frameborder="0" allowfullscreen></iframe>'),
             array(
-                'type' => 'embedly',
+                'type' => 'video',
                 'data' => array(
-                    'html' => '<iframe src="http://google.be"></iframe>'
+                    'source' => 'youtube',
+                    'remote_id' => '4BXpi7056RM'
+                )
+            )
+        );
+
+        $converter = new Converter();
+        $this->assertEquals(
+            $converter->iframeToJson('<iframe src="//player.vimeo.com/video/63492364?title=0&amp;byline=0" frameborder="0"></iframe>'),
+            array(
+                'type' => 'video',
+                'data' => array(
+                    'source' => 'vimeo',
+                    'remote_id' => '63492364'
                 )
             )
         );

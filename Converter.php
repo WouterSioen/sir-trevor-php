@@ -77,20 +77,32 @@ class Converter
     }
 
     /**
-     * Converts embedly block to html
-     * Parameters are send as an array fetched from the json data
+     * Converts video block to html
      * 
+     * @param string $source
+     * @param string $remoteId
      * @return string
      */
-    public function embedlyToHtml()
+    public function videoToHtml($source, $remoteId)
     {
-        // Get the argument containing an iframe
-        $arguments = func_get_args();
-
-        foreach($arguments as $value)
+        // youtube video's
+        if($source == 'youtube')
         {
-            if(substr($value, 0, 7) === '<iframe') return $value . "\n";
+            $html = '<iframe src="//www.youtube.com/embed/' . $remoteId . '?rel=0" ';
+            $html .= 'frameborder="0" allowfullscreen></iframe>' . "\n";
+            return $html;
         }
+
+        // vimeo videos
+        if($source == 'vimeo')
+        {
+            $html = '<iframe src="//player.vimeo.com/video/' . $remoteId;
+            $html .= '?title=0&amp;byline=0" frameborder="0"></iframe>' . "\n";
+            return $html;
+        }
+
+        // fallback
+        return '';
     }
 
     /**
@@ -224,12 +236,29 @@ class Converter
      */
     public function iframeToJson($html)
     {
-        return array(
-            'type' => 'embedly',
-            'data' => array(
-                'html' => $html,
-            )
-        );
+        // youtube
+        if(preg_match('~//www.youtube.com/embed/([^/\?]+).*\"~si', $html, $matches))
+        {
+            return array(
+                'type' => 'video',
+                'data' => array(
+                    'source' => 'youtube',
+                    'remote_id' => $matches[1]
+                )
+            );
+        }
+
+        // vimeo
+        elseif(preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches))
+        {
+            return array(
+                'type' => 'video',
+                'data' => array(
+                    'source' => 'vimeo',
+                    'remote_id' => $matches[1]
+                )
+            );
+        }
     }
 
     /**
