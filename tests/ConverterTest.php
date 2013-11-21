@@ -82,7 +82,7 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $converter = new Converter();
 
         // let's try a basic json
-        $json = 
+        $json =
 '{"data": [{
   "type": "quote",
   "data": { "text": "Text", "cite": "Cite" }
@@ -94,7 +94,7 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         );
 
         // Lets convert a normal text type that uses the default converter
-        $json = 
+        $json =
 '{"data": [{
   "type": "text",
   "data": { "text": "test" }
@@ -103,7 +103,7 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($html, "<p>test</p>\n");
 
         // the embedly conversion is a little bit nastier
-        $json = 
+        $json =
 '{"data": [{
   "type":"video",
   "data": {
@@ -118,7 +118,7 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         );
 
         // The heading
-        $json = 
+        $json =
 '{"data": [{
   "type": "heading",
   "data": { "text": "test" }

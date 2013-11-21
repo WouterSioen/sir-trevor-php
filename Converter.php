@@ -17,7 +17,7 @@ class Converter
 {
     /**
      * The options we use for html to markdown
-     * 
+     *
      * @var array
      */
     private $options = array(
@@ -28,8 +28,8 @@ class Converter
 
     /**
      * Converts the outputted json from Sir Trevor to html
-     * 
-     * @param string $json
+     *
+     * @param  string $json
      * @return string
      */
     public function toHtml($json)
@@ -39,25 +39,19 @@ class Converter
         $html = '';
 
         // loop trough the data blocks
-        foreach($input['data'] as $block)
-        {
+        foreach ($input['data'] as $block) {
             // check if we have a converter for this type
             $converter = $block['type'] . 'ToHtml';
-            if(is_callable(array(__CLASS__, $converter)))
-            {
+            if (is_callable(array(__CLASS__, $converter))) {
                 // call the function and add the data as parameters
                 $html .= call_user_func_array(
                     array(__CLASS__, $converter),
                     $block['data']
                 );
-            }
-            elseif(array_key_exists('text', $block['data']))
-            {
+            } elseif (array_key_exists('text', $block['data'])) {
                 // we have a text block. Let's just try the default converter
                 $html .= $this->defaultToHtml($block['data']['text']);
-            }
-            else
-            {
+            } else {
                 throw new Exception('Can\t convert type ' . $block['type'] . '.');
             }
         }
@@ -68,7 +62,7 @@ class Converter
     /**
      * Converts default elements to html
      *
-     * @param string $text
+     * @param  string $text
      * @return string
      */
     public function defaultToHtml($text)
@@ -78,26 +72,26 @@ class Converter
 
     /**
      * Converts video block to html
-     * 
-     * @param string $source
-     * @param string $remoteId
+     *
+     * @param  string $source
+     * @param  string $remoteId
      * @return string
      */
     public function videoToHtml($source, $remoteId)
     {
         // youtube video's
-        if($source == 'youtube')
-        {
+        if ($source == 'youtube') {
             $html = '<iframe src="//www.youtube.com/embed/' . $remoteId . '?rel=0" ';
             $html .= 'frameborder="0" allowfullscreen></iframe>' . "\n";
+
             return $html;
         }
 
         // vimeo videos
-        if($source == 'vimeo')
-        {
+        if ($source == 'vimeo') {
             $html = '<iframe src="//player.vimeo.com/video/' . $remoteId;
             $html .= '?title=0&amp;byline=0" frameborder="0"></iframe>' . "\n";
+
             return $html;
         }
 
@@ -108,7 +102,7 @@ class Converter
     /**
      * Converts headers to html
      *
-     * @param string $text
+     * @param  string $text
      * @return string
      */
     public function headingToHtml($text)
@@ -118,9 +112,9 @@ class Converter
 
     /**
      * Converts quotes to html
-     * 
-     * @param string $text
-     * @param string[optional] $cite
+     *
+     * @param  string           $text
+     * @param  string[optional] $cite
      * @return string
      */
     public function quoteToHtml($text, $cite = null)
@@ -129,21 +123,21 @@ class Converter
         $html .= Markdown::defaultTransform($text);
 
         // Add the cite if necessary
-        if(!empty($cite))
-        {
+        if (!empty($cite)) {
             // remove the indent thats added by Sir Trevor
             $cite = ltrim($cite, '>');
             $html .= '<cite>' . Markdown::defaultTransform($cite) . '</cite>';
         }
 
         $html .= '</blockquote>';
+
         return $html;
     }
 
     /**
      * Converts the image to html
-     * 
-     * @param array $file
+     *
+     * @param  array  $file
      * @return string
      */
     public function imageToHtml($file)
@@ -153,8 +147,8 @@ class Converter
 
     /**
      * Converts html to the json Sir Trevor requires
-     * 
-     * @param string $html
+     *
+     * @param  string $html
      * @return string The json string
      */
     public function toJson($html)
@@ -173,13 +167,10 @@ class Converter
         $data = array();
 
         // loop trough the child nodes and convert them
-        if($body)
-        {
-            foreach($body->childNodes as $node)
-            {
+        if ($body) {
+            foreach ($body->childNodes as $node) {
                 $html = $node->ownerDocument->saveXML($node);
-                switch($node->nodeName)
-                {
+                switch ($node->nodeName) {
                     case 'p':
                         $data[] = $this->paragraphToJson($html);
                         break;
@@ -209,7 +200,7 @@ class Converter
 
     /**
      * Converts headings to the json format
-     * 
+     *
      * @param $html
      * @return array
      */
@@ -230,15 +221,14 @@ class Converter
 
     /**
      * Converts an iframe to the array Embedly needs
-     * 
+     *
      * @param $html
      * @return array
      */
     public function iframeToJson($html)
     {
         // youtube
-        if(preg_match('~//www.youtube.com/embed/([^/\?]+).*\"~si', $html, $matches))
-        {
+        if (preg_match('~//www.youtube.com/embed/([^/\?]+).*\"~si', $html, $matches)) {
             return array(
                 'type' => 'video',
                 'data' => array(
@@ -249,8 +239,7 @@ class Converter
         }
 
         // vimeo
-        elseif(preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches))
-        {
+        elseif (preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches)) {
             return array(
                 'type' => 'video',
                 'data' => array(
@@ -263,7 +252,7 @@ class Converter
 
     /**
      * Converts lists to the json format
-     * 
+     *
      * @param $html
      * @return array
      */
@@ -285,7 +274,7 @@ class Converter
 
     /**
      * Converts paragraphs to the json format
-     * 
+     *
      * @param $html
      * @return array
      */
@@ -305,7 +294,7 @@ class Converter
 
     /**
      * Converts quotes to the json format
-     * 
+     *
      * @param $node The node is send to check if it contains a cite
      * @return array
      */
@@ -314,11 +303,9 @@ class Converter
         // check if the quote contains a cite
         $cite = '';
 
-        foreach($node->childNodes as $child)
-        {
+        foreach ($node->childNodes as $child) {
             // if it contains a 'cite' node, we should add it in the cite property
-            if($child->nodeName == 'cite')
-            {
+            if ($child->nodeName == 'cite') {
                 $html = $child->ownerDocument->saveXML($child);
                 $html = preg_replace('/<(\/|)cite>/i', '', $html);
                 $child->parentNode->removeChild($child);
@@ -344,8 +331,8 @@ class Converter
 
     /**
      * Converts images to html
-     * 
-     * @param string $url
+     *
+     * @param  string $url
      * @return array
      */
     public static function imageToJson($url)
