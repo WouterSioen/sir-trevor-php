@@ -189,6 +189,7 @@ class Converter
                     case 'img':
                         $src = $node->getAttribute('src');
                         $data[] = $this->imageToJson($src);
+                        break;
                     default:
                         break;
                 }
