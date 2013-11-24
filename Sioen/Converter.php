@@ -1,6 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php';
+namespace Sioen;
 
 use \Michelf\Markdown;
 
@@ -25,6 +25,14 @@ class Converter
         'bold_style' => '__',
         'italic_style' => '_',
     );
+
+    /**
+     * We need our vendors to converter markdown to html and html to markdown
+     */
+    public function __construct()
+    {
+        require_once 'vendor/autoload.php';
+    }
 
     /**
      * Converts the outputted json from Sir Trevor to html
@@ -155,7 +163,7 @@ class Converter
     {
         // Strip white space between tags to prevent creation of empty #text nodes
         $html = preg_replace('~>\s+<~', '><', $html);
-        $this->document = new DOMDocument();
+        $this->document = new \DOMDocument();
 
         // Load UTF-8 HTML hack (from http://bit.ly/pVDyCt)
         $this->document->loadHTML('<?xml encoding="UTF-8">' . $html);
@@ -209,7 +217,7 @@ class Converter
     {
         // remove the h2 tags from the text. We just need the inner text.
         $html = preg_replace('/<(\/|)h2>/i', '', $html);
-        $markdown = new HTML_To_Markdown($html, $this->options);
+        $markdown = new \HTML_To_Markdown($html, $this->options);
         $markdown = ' ' . $markdown->output();
 
         return array(
@@ -228,7 +236,7 @@ class Converter
      */
     public function iframeToJson($html)
     {
-        // youtube
+        // youtube or vimeo
         if (preg_match('~//www.youtube.com/embed/([^/\?]+).*\"~si', $html, $matches)) {
             return array(
                 'type' => 'video',
@@ -237,10 +245,7 @@ class Converter
                     'remote_id' => $matches[1]
                 )
             );
-        }
-
-        // vimeo
-        elseif (preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches)) {
+        } elseif (preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches)) {
             return array(
                 'type' => 'video',
                 'data' => array(
@@ -259,7 +264,7 @@ class Converter
      */
     public function listToJson($html)
     {
-        $markdown = new HTML_To_Markdown($html, $this->options);
+        $markdown = new \HTML_To_Markdown($html, $this->options);
         $markdown = $markdown->output();
 
         // we need a space in the beginnen of each line
@@ -282,7 +287,7 @@ class Converter
     public function paragraphToJson($html)
     {
         // convert the html to markdown. That's all we need
-        $markdown = new HTML_To_Markdown($html, $this->options);
+        $markdown = new \HTML_To_Markdown($html, $this->options);
         $markdown = ' ' . $markdown->output();
 
         return array(
@@ -310,7 +315,7 @@ class Converter
                 $html = $child->ownerDocument->saveXML($child);
                 $html = preg_replace('/<(\/|)cite>/i', '', $html);
                 $child->parentNode->removeChild($child);
-                $cite = new HTML_To_Markdown($html, $this->options);
+                $cite = new \HTML_To_Markdown($html, $this->options);
                 $cite = ' ' . $cite->output();
             }
         }
@@ -318,7 +323,7 @@ class Converter
         // we use the remaining html to create the remaining text
         $html = $node->ownerDocument->saveXML($node);
         $html = preg_replace('/<(\/|)blockquote>/i', '', $html);
-        $markdown = new HTML_To_Markdown($html, $this->options);
+        $markdown = new \HTML_To_Markdown($html, $this->options);
         $markdown = ' ' . $markdown->output();
 
         return array(

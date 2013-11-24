@@ -1,8 +1,17 @@
 <?php
-require_once dirname(__FILE__) . '/../Converter.php';
 
-class ConverterTest extends PHPUnit_Framework_TestCase
+namespace Sioen\Tests;
+
+use Sioen\Converter;
+
+class ConverterTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        // require our converter class
+        require_once dirname(__FILE__) . '/../Converter.php';
+    }
+
     public function testDefaultToHtml()
     {
         $converter = new Converter();
@@ -82,11 +91,15 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         $converter = new Converter();
 
         // let's try a basic json
-        $json =
-'{"data": [{
-  "type": "quote",
-  "data": { "text": "Text", "cite": "Cite" }
-}]}';
+        $json = json_encode(array(
+            'data' => array(array(
+                'type' => 'quote',
+                'data' => array(
+                    'text' => 'Text',
+                    'cite' => 'Cite'
+                )
+            ))
+        ));
         $html = $converter->toHtml($json);
         $this->assertEquals(
             $html,
@@ -94,23 +107,27 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         );
 
         // Lets convert a normal text type that uses the default converter
-        $json =
-'{"data": [{
-  "type": "text",
-  "data": { "text": "test" }
-}]}';
+        $json = json_encode(array(
+            'data' => array(array(
+                'type' => 'text',
+                'data' => array(
+                    'text' => 'test'
+                )
+            ))
+        ));
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<p>test</p>\n");
 
-        // the embedly conversion is a little bit nastier
-        $json =
-'{"data": [{
-  "type":"video",
-  "data": {
-    "source":"youtube",
-    "remote_id":"4BXpi7056RM"
-  }
-}]}';
+        // the video conversion
+        $json = json_encode(array(
+            'data' => array(array(
+                'type' => 'video',
+                'data' => array(
+                    'source' => 'youtube',
+                    'remote_id' => '4BXpi7056RM'
+                )
+            ))
+        ));
         $html = $converter->toHtml($json);
         $this->assertEquals(
             $html,
@@ -118,16 +135,28 @@ class ConverterTest extends PHPUnit_Framework_TestCase
         );
 
         // The heading
-        $json =
-'{"data": [{
-  "type": "heading",
-  "data": { "text": "test" }
-}]}';
+        $json = json_encode(array(
+            'data' => array(array(
+                'type' => 'heading',
+                'data' => array(
+                    'text' => 'test'
+                )
+            ))
+        ));
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<h2>test</h2>\n");
 
         // images
-        $json = '{"data":[{"type":"image","data":{"file":{"url":"/frontend/files/sir-trevor/images/IMG_3867.JPG"}}}]}';
+        $json = json_encode(array(
+            'data' => array(array(
+                'type' => 'image',
+                'data' => array(
+                    'file' => array(
+                        'url' => '/frontend/files/sir-trevor/images/IMG_3867.JPG'
+                    )
+                )
+            ))
+        ));
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<img src=\"/frontend/files/sir-trevor/images/IMG_3867.JPG\" />\n");
     }
@@ -204,7 +233,9 @@ class ConverterTest extends PHPUnit_Framework_TestCase
     {
         $converter = new Converter();
         $this->assertEquals(
-            $converter->iframeToJson('<iframe src="//www.youtube.com/embed/4BXpi7056RM?rel=0" frameborder="0" allowfullscreen></iframe>'),
+            $converter->iframeToJson(
+                '<iframe src="//www.youtube.com/embed/4BXpi7056RM?rel=0" frameborder="0" allowfullscreen></iframe>'
+            ),
             array(
                 'type' => 'video',
                 'data' => array(
@@ -216,7 +247,9 @@ class ConverterTest extends PHPUnit_Framework_TestCase
 
         $converter = new Converter();
         $this->assertEquals(
-            $converter->iframeToJson('<iframe src="//player.vimeo.com/video/63492364?title=0&amp;byline=0" frameborder="0"></iframe>'),
+            $converter->iframeToJson(
+                '<iframe src="//player.vimeo.com/video/63492364?title=0&amp;byline=0" frameborder="0"></iframe>'
+            ),
             array(
                 'type' => 'video',
                 'data' => array(

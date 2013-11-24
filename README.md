@@ -51,6 +51,14 @@ Then `composer install` and add `require 'vendor/autoload.php';` to the top of y
 Usage
 -----
 
+### Overal
+
+    // add the composer autoloader to your file
+    require_once 'vendor/autoload.php';
+
+    // Add a use statement to be able to use the class
+    use Sioen\Composer;
+
 ### Conversion to HTML
 
     // fetch the data from the post

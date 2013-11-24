@@ -13,7 +13,7 @@
         }
     ],
     "autoload": {
-        "classmap": [ "Converter.php" ]
+        "psr-0": { "Sioen": "" }
     },
     "require": {
         "php": ">=5.2",
