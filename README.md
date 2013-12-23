@@ -33,11 +33,7 @@ This library package requires PHP 5.3 or later.
 Installation
 ------------
 
-Either include HTML_To_Markdown.php directly:
-
-    require_once(dirname( __FILE__) . '/Composer.php');
-
-Or, require the library in your composer.json:
+Require the library in your composer.json:
 
     {
         "require": {
