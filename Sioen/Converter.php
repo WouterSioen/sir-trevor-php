@@ -2,6 +2,7 @@
 
 namespace Sioen;
 
+use Exception;
 use \Michelf\Markdown;
 
 /**
