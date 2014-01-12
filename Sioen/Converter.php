@@ -51,10 +51,10 @@ class Converter
         foreach ($input['data'] as $block) {
             // check if we have a converter for this type
             $converter = $block['type'] . 'ToHtml';
-            if (is_callable(array(__CLASS__, $converter))) {
+            if (is_callable(array($this, $converter))) {
                 // call the function and add the data as parameters
                 $html .= call_user_func_array(
-                    array(__CLASS__, $converter),
+                    array($this, $converter),
                     $block['data']
                 );
             } elseif (array_key_exists('text', $block['data'])) {
