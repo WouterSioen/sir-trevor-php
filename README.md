@@ -53,7 +53,7 @@ Usage
     require_once 'vendor/autoload.php';
 
     // Add a use statement to be able to use the class
-    use Sioen\Composer;
+    use Sioen\Converter;
 
 ### Conversion to HTML
 
