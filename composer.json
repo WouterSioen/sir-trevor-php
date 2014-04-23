@@ -13,7 +13,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Sioen": "" }
+        "psr-0": { "Sioen": "src/" }
     },
     "require": {
         "php": ">=5.2",

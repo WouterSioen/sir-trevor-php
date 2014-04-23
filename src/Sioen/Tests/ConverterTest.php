@@ -6,12 +6,6 @@ use Sioen\Converter;
 
 class ConverterTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        // require our converter class
-        require_once dirname(__FILE__) . '/../Converter.php';
-    }
-
     public function testDefaultToHtml()
     {
         $converter = new Converter();
