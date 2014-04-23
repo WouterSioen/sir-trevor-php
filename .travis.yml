@@ -6,4 +6,4 @@ php:
 script: 
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install
-  - phpunit ./Sioen/Tests
+  - phpunit
