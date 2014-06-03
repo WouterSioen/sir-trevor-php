@@ -164,14 +164,14 @@ class Converter
     {
         // Strip white space between tags to prevent creation of empty #text nodes
         $html = preg_replace('~>\s+<~', '><', $html);
-        $this->document = new \DOMDocument();
+        $document = new \DOMDocument();
 
         // Load UTF-8 HTML hack (from http://bit.ly/pVDyCt)
-        $this->document->loadHTML('<?xml encoding="UTF-8">' . $html);
-        $this->document->encoding = 'UTF-8';
+        $document->loadHTML('<?xml encoding="UTF-8">' . $html);
+        $document->encoding = 'UTF-8';
 
         // fetch the body of the document. All html is stored in there
-        $body = $this->document->getElementsByTagName("body")->item(0);
+        $body = $document->getElementsByTagName("body")->item(0);
 
         $data = array();
 
