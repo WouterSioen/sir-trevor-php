@@ -28,14 +28,6 @@ class Converter
     );
 
     /**
-     * We need our vendors to converter markdown to html and html to markdown
-     */
-    public function __construct()
-    {
-        require_once 'vendor/autoload.php';
-    }
-
-    /**
      * Converts the outputted json from Sir Trevor to html
      *
      * @param  string $json
