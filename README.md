@@ -21,7 +21,7 @@ Json input Sir Trevor needs will be implemented too.
  - Quote
  - Image
 
-More coming soon
+It's easy to add a custom block. Just add a new ConversionType in the Sioen\Types namespace and register it in the ToJsonContect and the ToHtmlContect.
 
 
 Requirement
