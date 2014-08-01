@@ -20,13 +20,11 @@ class BaseConverter implements ConverterInterface
     public function toJson(\DOMElement $node)
     {
         $html = $node->ownerDocument->saveXML($node);
-        $markdown = new \HTML_To_Markdown($html, $this->options);
-        $markdown = ' ' . $markdown->output();
 
         return array(
             'type' => 'text',
             'data' => array(
-                'text' => $markdown
+                'text' => ' ' . $this->htmlToMarkdown($html)
             )
         );
     }
@@ -34,5 +32,11 @@ class BaseConverter implements ConverterInterface
     public function toHtml(array $data)
     {
         return Markdown::defaultTransform($data['text']);
+    }
+
+    protected function htmlToMarkdown($html)
+    {
+        $markdown = new \HTML_To_Markdown($html, $this->options);
+        return $markdown->output();
     }
 }

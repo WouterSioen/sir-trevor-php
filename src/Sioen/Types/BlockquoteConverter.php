@@ -17,21 +17,18 @@ class BlockquoteConverter extends BaseConverter implements ConverterInterface
                 $html = $child->ownerDocument->saveXML($child);
                 $html = preg_replace('/<(\/|)cite>/i', '', $html);
                 $child->parentNode->removeChild($child);
-                $cite = new \HTML_To_Markdown($html, $this->options);
-                $cite = ' ' . $cite->output();
+                $cite = ' ' . $this->htmlToMarkdown($html);
             }
         }
 
         // we use the remaining html to create the remaining text
         $html = $node->ownerDocument->saveXML($node);
         $html = preg_replace('/<(\/|)blockquote>/i', '', $html);
-        $markdown = new \HTML_To_Markdown($html, $this->options);
-        $markdown = ' ' . $markdown->output();
 
         return array(
             'type' => 'quote',
             'data' => array(
-                'text' => $markdown,
+                'text' => ' ' . $this->htmlToMarkdown($html),
                 'cite' => $cite
             )
         );
