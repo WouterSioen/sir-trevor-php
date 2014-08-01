@@ -13,26 +13,26 @@ class ToHtmlContext
 {
     protected $converter = null;
 
-    public function __construct($type, $options)
+    public function __construct($type)
     {
         switch ($type) {
             case 'heading':
-                $this->converter = new HeadingConverter($options);
+                $this->converter = new HeadingConverter();
                 break;
             case 'list':
-                $this->converter = new ListConverter($options);
+                $this->converter = new ListConverter();
                 break;
             case 'quote':
-                $this->converter = new BlockquoteConverter($options);
+                $this->converter = new BlockquoteConverter();
                 break;
             case 'video':
-                $this->converter = new IframeConverter($options);
+                $this->converter = new IframeConverter();
                 break;
             case 'image':
-                $this->converter = new ImageConverter($options);
+                $this->converter = new ImageConverter();
                 break;
             default:
-                $this->converter = new BaseConverter($options);
+                $this->converter = new BaseConverter();
                 break;
         }
     }

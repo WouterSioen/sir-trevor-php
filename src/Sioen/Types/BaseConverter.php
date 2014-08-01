@@ -6,12 +6,16 @@ use \Michelf\Markdown;
 
 class BaseConverter implements ConverterInterface
 {
-    protected $options;
-
-    public function __construct(array $options)
-    {
-        $this->options = $options;
-    }
+    /**
+     * The options we use for html to markdown
+     *
+     * @var array
+     */
+    protected $options = array(
+        'header_style' => 'atx',
+        'bold_style' => '__',
+        'italic_style' => '_',
+    );
 
     public function toJson(\DOMElement $node)
     {

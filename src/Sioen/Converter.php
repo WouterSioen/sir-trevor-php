@@ -14,17 +14,6 @@ namespace Sioen;
 class Converter
 {
     /**
-     * The options we use for html to markdown
-     *
-     * @var array
-     */
-    private $options = array(
-        'header_style' => 'atx',
-        'bold_style' => '__',
-        'italic_style' => '_',
-    );
-
-    /**
      * Converts the outputted json from Sir Trevor to html
      *
      * @param  string $json
@@ -38,7 +27,7 @@ class Converter
 
         // loop trough the data blocks
         foreach ($input['data'] as $block) {
-            $toHtmlContext = new ToHtmlContext($block['type'], $this->options);
+            $toHtmlContext = new ToHtmlContext($block['type']);
             $html .= $toHtmlContext->getHtml($block['data']);
         }
 
@@ -69,7 +58,7 @@ class Converter
         // loop trough the child nodes and convert them
         if ($body) {
             foreach ($body->childNodes as $node) {
-                $toJsonContext = new ToJsonContext($node->nodeName, $this->options);
+                $toJsonContext = new ToJsonContext($node->nodeName);
                 $data[] = $toJsonContext->getData($node);
             }
         }
