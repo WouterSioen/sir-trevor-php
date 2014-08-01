@@ -3,14 +3,6 @@
 namespace Sioen;
 
 use Exception;
-use \Michelf\Markdown;
-use Sioen\Types\BlockquoteConverter;
-use Sioen\Types\HeadingConverter;
-use Sioen\Types\IframeConverter;
-use Sioen\Types\ImageConverter;
-use Sioen\Types\ListConverter;
-use Sioen\Types\ParagraphConverter;
-use Sioen\Types\BaseConverter;
 
 /**
  * Class Converter
@@ -48,28 +40,8 @@ class Converter
 
         // loop trough the data blocks
         foreach ($input['data'] as $block) {
-            $converter = new BaseConverter($this->options);
-            switch ($block['type']) {
-                case 'heading':
-                    $converter = new HeadingConverter($this->options);
-                    break;
-                case 'list':
-                    $converter = new ListConverter($this->options);
-                    break;
-                case 'quote':
-                    $converter = new BlockquoteConverter($this->options);
-                    break;
-                case 'video':
-                    $converter = new IframeConverter($this->options);
-                    break;
-                case 'image':
-                    $converter = new ImageConverter($this->options);
-                    break;
-                default:
-                    break;
-            }
-
-            $html .= $converter->toHtml($block['data']);
+            $toHtmlContext = new ToHtmlContext($block['type'], $this->options);
+            $html .= $toHtmlContext->getHtml($block['data']);
         }
 
         return $html;
@@ -99,30 +71,8 @@ class Converter
         // loop trough the child nodes and convert them
         if ($body) {
             foreach ($body->childNodes as $node) {
-                $converter = new BaseConverter($this->options);
-                switch ($node->nodeName) {
-                    case 'p':
-                        $converter = new ParagraphConverter($this->options);
-                        break;
-                    case 'h2':
-                        $converter = new HeadingConverter($this->options);
-                        break;
-                    case 'ul':
-                        $converter = new ListConverter($this->options);
-                        break;
-                    case 'blockquote':
-                        $converter = new BlockquoteConverter($this->options);
-                        break;
-                    case 'iframe':
-                        $converter = new IframeConverter($this->options);
-                        break;
-                    case 'img':
-                        $converter = new ImageConverter($this->options);
-                        break;
-                    default:
-                        break;
-                }
-                $data[] = $converter->toJson($node);
+                $toJsonContext = new ToJsonContext($node->nodeName, $this->options);
+                $data[] = $toJsonContext->getData($node);
             }
         }
 
