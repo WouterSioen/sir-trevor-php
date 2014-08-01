@@ -297,7 +297,7 @@ class Converter
      * @param $node The node is send to check if it contains a cite
      * @return array
      */
-    public function quoteToJson($node)
+    public function quoteToJson(\DOMElement $node)
     {
         // check if the quote contains a cite
         $cite = '';
