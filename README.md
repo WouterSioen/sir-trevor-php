@@ -1,7 +1,7 @@
 A Sir Trevor JSON to HTML Converter
 ===================================
 
-[![Build Status](https://travis-ci.org/WouterSioen/sir-trevor-php.svg?branch=master)](https://travis-ci.org/WouterSioen/sir-trevor-php)
+[![Build Status](https://travis-ci.org/WouterSioen/sir-trevor-php.svg?branch=master)](https://travis-ci.org/WouterSioen/sir-trevor-php) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/WouterSioen/sir-trevor-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/WouterSioen/sir-trevor-php/?branch=master) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/f78658cc-06f2-45b0-8704-68aaa0984d38/mini.png)](https://insight.sensiolabs.com/projects/f78658cc-06f2-45b0-8704-68aaa0984d38)
 
 
 Introduction
