@@ -4,6 +4,13 @@ namespace Sioen;
 
 use Exception;
 use \Michelf\Markdown;
+use Sioen\Types\BlockquoteConverter;
+use Sioen\Types\HeadingConverter;
+use Sioen\Types\IframeConverter;
+use Sioen\Types\ImageConverter;
+use Sioen\Types\ListConverter;
+use Sioen\Types\ParagraphConverter;
+use Sioen\Types\BaseConverter;
 
 /**
  * Class Converter
@@ -41,109 +48,31 @@ class Converter
 
         // loop trough the data blocks
         foreach ($input['data'] as $block) {
-            // check if we have a converter for this type
-            $converter = $block['type'] . 'ToHtml';
-            if (is_callable(array($this, $converter))) {
-                // call the function and add the data as parameters
-                $html .= call_user_func_array(
-                    array($this, $converter),
-                    $block['data']
-                );
-            } elseif (array_key_exists('text', $block['data'])) {
-                // we have a text block. Let's just try the default converter
-                $html .= $this->defaultToHtml($block['data']['text']);
-            } else {
-                throw new Exception('Can\t convert type ' . $block['type'] . '.');
+            $converter = new BaseConverter($this->options);
+            switch ($block['type']) {
+                case 'heading':
+                    $converter = new HeadingConverter($this->options);
+                    break;
+                case 'list':
+                    $converter = new ListConverter($this->options);
+                    break;
+                case 'quote':
+                    $converter = new BlockquoteConverter($this->options);
+                    break;
+                case 'video':
+                    $converter = new IframeConverter($this->options);
+                    break;
+                case 'image':
+                    $converter = new ImageConverter($this->options);
+                    break;
+                default:
+                    break;
             }
+
+            $html .= $converter->toHtml($block['data']);
         }
 
         return $html;
-    }
-
-    /**
-     * Converts default elements to html
-     *
-     * @param  string $text
-     * @return string
-     */
-    public function defaultToHtml($text)
-    {
-        return Markdown::defaultTransform($text);
-    }
-
-    /**
-     * Converts video block to html
-     *
-     * @param  string $source
-     * @param  string $remoteId
-     * @return string
-     */
-    public function videoToHtml($source, $remoteId)
-    {
-        // youtube video's
-        if ($source == 'youtube') {
-            $html = '<iframe src="//www.youtube.com/embed/' . $remoteId . '?rel=0" ';
-            $html .= 'frameborder="0" allowfullscreen></iframe>' . "\n";
-
-            return $html;
-        }
-
-        // vimeo videos
-        if ($source == 'vimeo') {
-            $html = '<iframe src="//player.vimeo.com/video/' . $remoteId;
-            $html .= '?title=0&amp;byline=0" frameborder="0"></iframe>' . "\n";
-
-            return $html;
-        }
-
-        // fallback
-        return '';
-    }
-
-    /**
-     * Converts headers to html
-     *
-     * @param  string $text
-     * @return string
-     */
-    public function headingToHtml($text)
-    {
-        return Markdown::defaultTransform('## ' . $text);
-    }
-
-    /**
-     * Converts quotes to html
-     *
-     * @param  string           $text
-     * @param  string[optional] $cite
-     * @return string
-     */
-    public function quoteToHtml($text, $cite = null)
-    {
-        $html = '<blockquote>';
-        $html .= Markdown::defaultTransform($text);
-
-        // Add the cite if necessary
-        if (!empty($cite)) {
-            // remove the indent thats added by Sir Trevor
-            $cite = ltrim($cite, '>');
-            $html .= '<cite>' . Markdown::defaultTransform($cite) . '</cite>';
-        }
-
-        $html .= '</blockquote>';
-
-        return $html;
-    }
-
-    /**
-     * Converts the image to html
-     *
-     * @param  array  $file
-     * @return string
-     */
-    public function imageToHtml($file)
-    {
-        return '<img src="' . $file['url'] . '" />' . "\n";
     }
 
     /**
@@ -170,179 +99,33 @@ class Converter
         // loop trough the child nodes and convert them
         if ($body) {
             foreach ($body->childNodes as $node) {
-                $html = $node->ownerDocument->saveXML($node);
+                $converter = new BaseConverter($this->options);
                 switch ($node->nodeName) {
                     case 'p':
-                        $data[] = $this->paragraphToJson($html);
+                        $converter = new ParagraphConverter($this->options);
                         break;
                     case 'h2':
-                        $data[] = $this->headingToJson($html);
+                        $converter = new HeadingConverter($this->options);
                         break;
                     case 'ul':
-                        $data[] = $this->listToJson($html);
+                        $converter = new ListConverter($this->options);
                         break;
                     case 'blockquote':
-                        $data[] = $this->quoteToJson($node);
+                        $converter = new BlockquoteConverter($this->options);
                         break;
                     case 'iframe':
-                        $data[] = $this->iframeToJson($html);
+                        $converter = new IframeConverter($this->options);
                         break;
                     case 'img':
-                        $src = $node->getAttribute('src');
-                        $data[] = $this->imageToJson($src);
+                        $converter = new ImageConverter($this->options);
                         break;
                     default:
                         break;
                 }
+                $data[] = $converter->toJson($node);
             }
         }
 
         return json_encode(array('data' => $data));
-    }
-
-    /**
-     * Converts headings to the json format
-     *
-     * @param $html
-     * @return array
-     */
-    public function headingToJson($html)
-    {
-        // remove the h2 tags from the text. We just need the inner text.
-        $html = preg_replace('/<(\/|)h2>/i', '', $html);
-        $markdown = new \HTML_To_Markdown($html, $this->options);
-        $markdown = ' ' . $markdown->output();
-
-        return array(
-            'type' => 'heading',
-            'data' => array(
-                'text' => $markdown
-            )
-        );
-    }
-
-    /**
-     * Converts an iframe to the array Embedly needs
-     *
-     * @param $html
-     * @return array
-     */
-    public function iframeToJson($html)
-    {
-        // youtube or vimeo
-        if (preg_match('~//www.youtube.com/embed/([^/\?]+).*\"~si', $html, $matches)) {
-            return array(
-                'type' => 'video',
-                'data' => array(
-                    'source' => 'youtube',
-                    'remote_id' => $matches[1]
-                )
-            );
-        } elseif (preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches)) {
-            return array(
-                'type' => 'video',
-                'data' => array(
-                    'source' => 'vimeo',
-                    'remote_id' => $matches[1]
-                )
-            );
-        }
-    }
-
-    /**
-     * Converts lists to the json format
-     *
-     * @param $html
-     * @return array
-     */
-    public function listToJson($html)
-    {
-        $markdown = new \HTML_To_Markdown($html, $this->options);
-        $markdown = $markdown->output();
-
-        // we need a space in the beginnen of each line
-        $markdown = ' ' . str_replace("\n", "\n ", $markdown);
-
-        return array(
-            'type' => 'list',
-            'data' => array(
-                'text' => $markdown
-            )
-        );
-    }
-
-    /**
-     * Converts paragraphs to the json format
-     *
-     * @param $html
-     * @return array
-     */
-    public function paragraphToJson($html)
-    {
-        // convert the html to markdown. That's all we need
-        $markdown = new \HTML_To_Markdown($html, $this->options);
-        $markdown = ' ' . $markdown->output();
-
-        return array(
-            'type' => 'text',
-            'data' => array(
-                'text' => $markdown
-            )
-        );
-    }
-
-    /**
-     * Converts quotes to the json format
-     *
-     * @param $node The node is send to check if it contains a cite
-     * @return array
-     */
-    public function quoteToJson(\DOMElement $node)
-    {
-        // check if the quote contains a cite
-        $cite = '';
-
-        foreach ($node->childNodes as $child) {
-            // if it contains a 'cite' node, we should add it in the cite property
-            if ($child->nodeName == 'cite') {
-                $html = $child->ownerDocument->saveXML($child);
-                $html = preg_replace('/<(\/|)cite>/i', '', $html);
-                $child->parentNode->removeChild($child);
-                $cite = new \HTML_To_Markdown($html, $this->options);
-                $cite = ' ' . $cite->output();
-            }
-        }
-
-        // we use the remaining html to create the remaining text
-        $html = $node->ownerDocument->saveXML($node);
-        $html = preg_replace('/<(\/|)blockquote>/i', '', $html);
-        $markdown = new \HTML_To_Markdown($html, $this->options);
-        $markdown = ' ' . $markdown->output();
-
-        return array(
-            'type' => 'quote',
-            'data' => array(
-                'text' => $markdown,
-                'cite' => $cite
-            )
-        );
-    }
-
-    /**
-     * Converts images to html
-     *
-     * @param  string $url
-     * @return array
-     */
-    public static function imageToJson($url)
-    {
-        return array(
-            'type' => 'image',
-            'data' => array(
-                'file' => array(
-                    'url' => $url
-                )
-            )
-        );
     }
 }
