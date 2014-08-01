@@ -2,8 +2,6 @@
 
 namespace Sioen\Types;
 
-use \Michelf\Markdown;
-
 class ParagraphConverter extends BaseConverter implements ConverterInterface
 {
     public function toJson(\DOMElement $node)

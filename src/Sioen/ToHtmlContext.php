@@ -7,7 +7,6 @@ use Sioen\Types\HeadingConverter;
 use Sioen\Types\IframeConverter;
 use Sioen\Types\ImageConverter;
 use Sioen\Types\ListConverter;
-use Sioen\Types\ParagraphConverter;
 use Sioen\Types\BaseConverter;
 
 class ToHtmlContext
