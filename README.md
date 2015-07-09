@@ -35,13 +35,9 @@ Installation
 
 Require the library in your composer.json:
 
-    {
-        "require": {
-            "woutersioen/sir-trevor-php": "dev-master"
-        }
-    }
+run `composer require woutersioen/sir-trevor-php`.
 
-Then `composer install` and add `require 'vendor/autoload.php';` to the top of your script.
+Make sure you have `require 'vendor/autoload.php';` in the top of your script. If you're using a Framework, this should be ok by default.
 
 
 Usage
