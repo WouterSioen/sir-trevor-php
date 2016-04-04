@@ -2,13 +2,13 @@
 
 namespace Sioen\Tests;
 
-use Sioen\JsonToHtmlConverter;
+use Sioen\JsonToHtml;
 
-class JsonToHtmlConverterTest extends \PHPUnit_Framework_TestCase
+class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
 {
     public function testToHtml()
     {
-        $converter = new JsonToHtmlConverter();
+        $converter = new JsonToHtml();
 
         // let's try a basic json
         $json = json_encode(array(

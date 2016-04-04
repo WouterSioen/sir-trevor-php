@@ -3,7 +3,7 @@
 namespace Sioen;
 
 /**
- * Class JsonToHtmlConverter
+ * Class JsonToHtml
  *
  * Converts a json object received from Sir Trevor to an html representation
  *
@@ -11,7 +11,7 @@ namespace Sioen;
  * @author Wouter Sioen <wouter@woutersioen.be>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  */
-class JsonToHtmlConverter
+class JsonToHtml
 {
     /**
      * Converts the outputted json from Sir Trevor to html

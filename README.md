@@ -49,8 +49,8 @@ Usage
     require_once 'vendor/autoload.php';
 
     // Add a use statement to be able to use the class
-    use Sioen\HtmlToJsonConverter;
-    use Sioen\JsonToHtmlConverter;
+    use Sioen\HtmlToJson;
+    use Sioen\JsonToHtml;
 
 ### Conversion to HTML
 
@@ -58,8 +58,8 @@ Usage
     $sirTrevorInput = $_POST['textarea'];
 
     // create a converter object and handle the input
-    $converter = new JsonToHtmlConverter();
-    $html = $converter->toHtml($sirTrevorInput);
+    $jsonToHtml = new JsonToHtml();
+    $html = $jsonToHtml->toHtml($sirTrevorInput);
 
 ### Conversion to Json
 
@@ -67,5 +67,5 @@ Usage
     $html = '<h2>This is my html</h2>';
 
     // create a converter object and handle the output
-    $converter = new HtmlToJsonConverter();
-    $json = $converter->toJson($html);
+    $htmlToJson = new HtmlToJson();
+    $json = $htmlToJson->toJson($html);
