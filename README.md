@@ -8,7 +8,7 @@ Introduction
 ------------
 
 This is a Conversion library that handles the input from [Sir Trevor](http://madebymany.github.io/sir-trevor-js/)
-and converts it to HTML. In the future, the conversion from HTML to the 
+and converts it to HTML. In the future, the conversion from HTML to the
 Json input Sir Trevor needs will be implemented too.
 
 
@@ -49,7 +49,8 @@ Usage
     require_once 'vendor/autoload.php';
 
     // Add a use statement to be able to use the class
-    use Sioen\Converter;
+    use Sioen\HtmlToJsonConverter;
+    use Sioen\JsonToHtmlConverter;
 
 ### Conversion to HTML
 
@@ -57,7 +58,7 @@ Usage
     $sirTrevorInput = $_POST['textarea'];
 
     // create a converter object and handle the input
-    $converter = new Converter();
+    $converter = new JsonToHtmlConverter();
     $html = $converter->toHtml($sirTrevorInput);
 
 ### Conversion to Json
@@ -66,5 +67,5 @@ Usage
     $html = '<h2>This is my html</h2>';
 
     // create a converter object and handle the output
-    $converter = new Converter();
+    $converter = new HtmlToJsonConverter();
     $json = $converter->toJson($html);
