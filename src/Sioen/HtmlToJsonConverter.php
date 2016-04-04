@@ -3,37 +3,16 @@
 namespace Sioen;
 
 /**
- * Class Converter
+ * Class HtmlToJsonConverter
  *
- * A Sir Trevor to HTML conversion helper for PHP
+ * Converts html to a json object that can be understood by Sir Trevor
  *
  * @version 1.1.0
  * @author Wouter Sioen <wouter@woutersioen.be>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  */
-class Converter
+class HtmlToJsonConverter
 {
-    /**
-     * Converts the outputted json from Sir Trevor to html
-     *
-     * @param  string $json
-     * @return string
-     */
-    public function toHtml($json)
-    {
-        // convert the json to an associative array
-        $input = json_decode($json, true);
-        $html = '';
-
-        // loop trough the data blocks
-        foreach ($input['data'] as $block) {
-            $toHtmlContext = new ToHtmlContext($block['type']);
-            $html .= $toHtmlContext->getHtml($block['data']);
-        }
-
-        return $html;
-    }
-
     /**
      * Converts html to the json Sir Trevor requires
      *

@@ -2,13 +2,13 @@
 
 namespace Sioen\Tests;
 
-use Sioen\Converter;
+use Sioen\JsonToHtmlConverter;
 
-class ConverterTest extends \PHPUnit_Framework_TestCase
+class JsonToHtmlConverterTest extends \PHPUnit_Framework_TestCase
 {
     public function testToHtml()
     {
-        $converter = new Converter();
+        $converter = new JsonToHtmlConverter();
 
         // let's try a basic json
         $json = json_encode(array(
@@ -79,30 +79,5 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
         ));
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<img src=\"/frontend/files/sir-trevor/images/IMG_3867.JPG\" />\n");
-    }
-
-    public function testToJson()
-    {
-        $converter = new Converter();
-        $this->assertEquals(
-            $converter->toJson('<h2>Test</h2>'),
-            '{"data":[{"type":"heading","data":{"text":" Test"}}]}'
-        );
-
-        // a quote
-        $this->assertEquals(
-            $converter->toJson('<blockquote><p>Text</p><cite>Cite</cite></blockquote>'),
-            '{"data":[{"type":"quote","data":{"text":" Text","cite":" Cite"}}]}'
-        );
-
-        $this->assertEquals(
-            $converter->toJson('<blockquote><p>Text</p></blockquote>'),
-            '{"data":[{"type":"quote","data":{"text":" Text","cite":""}}]}'
-        );
-
-        $this->assertEquals(
-            $converter->toJson('<img src="/path/to/img.jpg" />'),
-            '{"data":[{"type":"image","data":{"file":{"url":"\/path\/to\/img.jpg"}}}]}'
-        );
     }
 }
