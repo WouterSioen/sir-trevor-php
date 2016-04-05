@@ -7,6 +7,7 @@ use Sioen\JsonToHtml\HeadingConverter;
 use Sioen\JsonToHtml\IframeConverter;
 use Sioen\JsonToHtml\ImageConverter;
 use Sioen\JsonToHtml\BaseConverter;
+use Sioen\JsonToHtml\Converter;
 
 /**
  * Class JsonToHtml
@@ -24,11 +25,16 @@ class JsonToHtml
 
     public function __construct()
     {
-        $this->converters[] = new HeadingConverter();
-        $this->converters[] = new BlockquoteConverter();
-        $this->converters[] = new IframeConverter();
-        $this->converters[] = new ImageConverter();
-        $this->converters[] = new BaseConverter();
+        $this->addConverter(new HeadingConverter());
+        $this->addConverter(new BlockquoteConverter());
+        $this->addConverter(new IframeConverter());
+        $this->addConverter(new ImageConverter());
+        $this->addConverter(new BaseConverter());
+    }
+
+    public function addConverter(Converter $converter)
+    {
+        $this->converters[] = $converter;
     }
 
     /**

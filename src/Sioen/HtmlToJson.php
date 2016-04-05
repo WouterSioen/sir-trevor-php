@@ -9,6 +9,7 @@ use Sioen\HtmlToJson\ImageConverter;
 use Sioen\HtmlToJson\ListConverter;
 use Sioen\HtmlToJson\ParagraphConverter;
 use Sioen\HtmlToJson\BaseConverter;
+use Sioen\HtmlToJson\Converter;
 
 /**
  * Class HtmlToJson
@@ -26,12 +27,17 @@ class HtmlToJson
 
     public function __construct()
     {
-        $this->converters[] = new HeadingConverter();
-        $this->converters[] = new ListConverter();
-        $this->converters[] = new BlockquoteConverter();
-        $this->converters[] = new IframeConverter();
-        $this->converters[] = new ImageConverter();
-        $this->converters[] = new BaseConverter();
+        $this->addConverter(new HeadingConverter());
+        $this->addConverter(new ListConverter());
+        $this->addConverter(new BlockquoteConverter());
+        $this->addConverter(new IframeConverter());
+        $this->addConverter(new ImageConverter());
+        $this->addConverter(new BaseConverter());
+    }
+
+    public function addConverter(Converter $converter)
+    {
+        $this->converters[] = $converter;
     }
 
     /**
