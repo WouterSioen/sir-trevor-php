@@ -2,6 +2,14 @@
 
 namespace Sioen;
 
+use Sioen\Types\BlockquoteConverter;
+use Sioen\Types\HeadingConverter;
+use Sioen\Types\IframeConverter;
+use Sioen\Types\ImageConverter;
+use Sioen\Types\ListConverter;
+use Sioen\Types\ParagraphConverter;
+use Sioen\Types\BaseConverter;
+
 /**
  * Class HtmlToJson
  *
@@ -37,11 +45,46 @@ class HtmlToJson
         // loop trough the child nodes and convert them
         if ($body) {
             foreach ($body->childNodes as $node) {
-                $toJsonContext = new ToJsonContext($node->nodeName);
-                $data[] = $toJsonContext->getData($node);
+                $data[] = $this->convert($node->nodeName, $node);
             }
         }
 
         return json_encode(array('data' => $data));
+    }
+
+    /**
+     * Converts one node to json
+     *
+     * @param string $nodeName
+     * @param \DOMElement $node
+     * @return array
+     */
+    private function convert($nodeName, \DOMElement $node)
+    {
+        switch ($nodeName) {
+            case 'p':
+                $converter = new ParagraphConverter();
+                break;
+            case 'h2':
+                $converter = new HeadingConverter();
+                break;
+            case 'ul':
+                $converter = new ListConverter();
+                break;
+            case 'blockquote':
+                $converter = new BlockquoteConverter();
+                break;
+            case 'iframe':
+                $converter = new IframeConverter();
+                break;
+            case 'img':
+                $converter = new ImageConverter();
+                break;
+            default:
+                $converter = new BaseConverter();
+                break;
+        }
+
+        return $converter->toJson($node);
     }
 }

@@ -2,6 +2,13 @@
 
 namespace Sioen;
 
+use Sioen\Types\BlockquoteConverter;
+use Sioen\Types\HeadingConverter;
+use Sioen\Types\IframeConverter;
+use Sioen\Types\ImageConverter;
+use Sioen\Types\ListConverter;
+use Sioen\Types\BaseConverter;
+
 /**
  * Class JsonToHtml
  *
@@ -27,10 +34,43 @@ class JsonToHtml
 
         // loop trough the data blocks
         foreach ($input['data'] as $block) {
-            $toHtmlContext = new ToHtmlContext($block['type']);
-            $html .= $toHtmlContext->getHtml($block['data']);
+            $html .= $this->convert($block['type'], $block['data']);
         }
 
         return $html;
+    }
+
+
+    /**
+     * Converts on array to an html string
+     *
+     * @param string $type
+     * @param array $data
+     * @return string
+     */
+    private function convert($type, array $data)
+    {
+        switch ($type) {
+            case 'heading':
+                $converter = new HeadingConverter();
+                break;
+            case 'list':
+                $converter = new ListConverter();
+                break;
+            case 'quote':
+                $converter = new BlockquoteConverter();
+                break;
+            case 'video':
+                $converter = new IframeConverter();
+                break;
+            case 'image':
+                $converter = new ImageConverter();
+                break;
+            default:
+                $converter = new BaseConverter();
+                break;
+        }
+
+        return $converter->toHtml($data);
     }
 }
