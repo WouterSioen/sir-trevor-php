@@ -3,12 +3,22 @@
 namespace Sioen\Tests;
 
 use Sioen\JsonToHtml;
+use Sioen\JsonToHtml\BlockquoteConverter;
+use Sioen\JsonToHtml\BaseConverter;
+use Sioen\JsonToHtml\IframeConverter;
+use Sioen\JsonToHtml\ImageConverter;
+use Sioen\JsonToHtml\HeadingConverter;
 
 class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
 {
     public function testToHtml()
     {
         $converter = new JsonToHtml();
+        $converter->addConverter(new BlockquoteConverter());
+        $converter->addConverter(new HeadingConverter());
+        $converter->addConverter(new IframeConverter());
+        $converter->addConverter(new ImageConverter());
+        $converter->addConverter(new BaseConverter());
 
         // let's try a basic json
         $json = json_encode(array(
@@ -25,6 +35,7 @@ class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
             $html,
             "<blockquote><p>Text</p>\n<cite><p>Cite</p>\n</cite></blockquote>"
         );
+
 
         // Lets convert a normal text type that uses the default converter
         $json = json_encode(array(

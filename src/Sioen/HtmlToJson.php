@@ -2,13 +2,6 @@
 
 namespace Sioen;
 
-use Sioen\HtmlToJson\BlockquoteConverter;
-use Sioen\HtmlToJson\HeadingConverter;
-use Sioen\HtmlToJson\IframeConverter;
-use Sioen\HtmlToJson\ImageConverter;
-use Sioen\HtmlToJson\ListConverter;
-use Sioen\HtmlToJson\ParagraphConverter;
-use Sioen\HtmlToJson\BaseConverter;
 use Sioen\HtmlToJson\Converter;
 
 /**
@@ -24,16 +17,6 @@ class HtmlToJson
 {
     /** @var array */
     private $converters;
-
-    public function __construct()
-    {
-        $this->addConverter(new HeadingConverter());
-        $this->addConverter(new ListConverter());
-        $this->addConverter(new BlockquoteConverter());
-        $this->addConverter(new IframeConverter());
-        $this->addConverter(new ImageConverter());
-        $this->addConverter(new BaseConverter());
-    }
 
     public function addConverter(Converter $converter)
     {

@@ -48,7 +48,7 @@ Usage
     // add the composer autoloader to your file
     require_once 'vendor/autoload.php';
 
-    // Add a use statement to be able to use the class
+    // Add the needed use statements to be able to use this library
     use Sioen\HtmlToJson;
     use Sioen\JsonToHtml;
 
@@ -57,8 +57,17 @@ Usage
     // fetch the data from the post
     $sirTrevorInput = $_POST['textarea'];
 
-    // create a converter object and handle the input
+    // create a JsonToHtml object
     $jsonToHtml = new JsonToHtml();
+
+    // add the wanted converters (you'll probably want to use your DIC container or a factory)
+    $jsonToHtml->addConverter(new Sioen\JsonToHtml\BlockquoteConverter());
+    $jsonToHtml->addConverter(new Sioen\JsonToHtml\HeadingConverter());
+    $jsonToHtml->addConverter(new Sioen\JsonToHtml\IframeConverter());
+    $jsonToHtml->addConverter(new Sioen\JsonToHtml\ImageConverter());
+    $jsonToHtml->addConverter(new Sioen\JsonToHtml\BaseConverter());
+
+    // generate your html
     $html = $jsonToHtml->toHtml($sirTrevorInput);
 
 ### Conversion to Json
@@ -66,6 +75,25 @@ Usage
     // fetch html from database or wherever you want to fetch it from
     $html = '<h2>This is my html</h2>';
 
-    // create a converter object and handle the output
+    // create a HtmlToJson object
     $htmlToJson = new HtmlToJson();
+
+    // add the wanted converters (you'll probably want to use your DIC container or a factory)
+    $jsonToHtml->addConverter(new Sioen\HtmlToJson\BlockquoteConverter());
+    $jsonToHtml->addConverter(new Sioen\HtmlToJson\HeadingConverter());
+    $jsonToHtml->addConverter(new Sioen\HtmlToJson\ImageConverter());
+    $jsonToHtml->addConverter(new Sioen\HtmlToJson\IframeConverter());
+    $jsonToHtml->addConverter(new Sioen\HtmlToJson\ListConverter());
+    $jsonToHtml->addConverter(new Sioen\HtmlToJson\BaseConverter());
+
+    // generate your json
     $json = $htmlToJson->toJson($html);
+
+### Adding your own converters.
+
+Create a class that implements/extends the right abstraction
+
+HtmlToJson converters should extend `Sioen\HtmlToJson\Converter`
+JsonToHtml converters should implement `Sioen\JsonToHtml\Converter`
+
+You can add your own converts using the `addConverter` method.
