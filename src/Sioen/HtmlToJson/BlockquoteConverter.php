@@ -2,6 +2,8 @@
 
 namespace Sioen\HtmlToJson;
 
+use Sioen\SirTrevorBlock;
+
 final class BlockquoteConverter implements Converter
 {
     use HtmlToMarkdown;
@@ -14,11 +16,11 @@ final class BlockquoteConverter implements Converter
         $html = $node->ownerDocument->saveXML($node);
         $html = preg_replace('/<(\/|)blockquote>/i', '', $html);
 
-        return array(
-            'type' => 'quote',
-            'data' => array(
+        return new SirTrevorBlock(
+            'quote',
+            array(
                 'text' => ' ' . $this->htmlToMarkdown($html),
-                'cite' => $cite
+                'cite' => $cite,
             )
         );
     }

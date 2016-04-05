@@ -37,7 +37,7 @@ final class JsonToHtml
 
         // loop trough the data blocks
         foreach ($input['data'] as $block) {
-            $html .= $this->convert($block['type'], $block['data']);
+            $html .= $this->convert(new SirTrevorBlock($block['type'], $block['data']));
         }
 
         return $html;
@@ -47,15 +47,14 @@ final class JsonToHtml
     /**
      * Converts on array to an html string
      *
-     * @param string $type
-     * @param array $data
+     * @param SirTrevorBlock $block
      * @return string
      */
-    private function convert($type, array $data)
+    private function convert(SirTrevorBlock $block)
     {
         foreach ($this->converters as $converter) {
-            if ($converter->matches($type)) {
-                return $converter->toHtml($data);
+            if ($converter->matches($block->getType())) {
+                return $converter->toHtml($block->getData());
             }
         }
     }

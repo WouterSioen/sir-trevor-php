@@ -2,6 +2,8 @@
 
 namespace Sioen\HtmlToJson;
 
+use Sioen\SirTrevorBlock;
+
 final class ListConverter implements Converter
 {
     use HtmlToMarkdown;
@@ -13,11 +15,9 @@ final class ListConverter implements Converter
         // we need a space in the beginning of each line
         $markdown = ' ' . str_replace("\n", "\n ", $markdown);
 
-        return array(
-            'type' => 'list',
-            'data' => array(
-                'text' => $markdown,
-            )
+        return new SirTrevorBlock(
+            'list',
+            array('text' => $markdown)
         );
     }
 

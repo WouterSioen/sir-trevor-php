@@ -2,6 +2,8 @@
 
 namespace Sioen\HtmlToJson;
 
+use Sioen\SirTrevorBlock;
+
 final class IframeConverter implements Converter
 {
     use HtmlToMarkdown;
@@ -12,21 +14,21 @@ final class IframeConverter implements Converter
 
         // youtube or vimeo
         if (preg_match('~//www.youtube.com/embed/([^/\?]+).*\"~si', $html, $matches)) {
-            return array(
-                'type' => 'video',
-                'data' => array(
+            return new SirTrevorBlock(
+                'video',
+                array(
                     'source' => 'youtube',
-                    'remote_id' => $matches[1]
+                    'remote_id' => $matches[1],
                 )
             );
         }
 
         if (preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches)) {
-            return array(
-                'type' => 'video',
-                'data' => array(
+            return new SirTrevorBlock(
+                'video',
+                array(
                     'source' => 'vimeo',
-                    'remote_id' => $matches[1]
+                    'remote_id' => $matches[1],
                 )
             );
         }

@@ -2,11 +2,13 @@
 
 namespace Sioen\HtmlToJson;
 
+use Sioen\SirTrevorBlock;
+
 interface Converter
 {
     /**
      * @param \DomElement $node
-     * @return array
+     * @return SirTrevorBlock
      */
     public function toJson(\DOMElement $node);
 

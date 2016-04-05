@@ -2,6 +2,8 @@
 
 namespace Sioen\HtmlToJson;
 
+use Sioen\SirTrevorBlock;
+
 final class BaseConverter implements Converter
 {
     use HtmlToMarkdown;
@@ -10,11 +12,9 @@ final class BaseConverter implements Converter
     {
         $html = $node->ownerDocument->saveXML($node);
 
-        return array(
-            'type' => 'text',
-            'data' => array(
-                'text' => ' ' . $this->htmlToMarkdown($html)
-            )
+        return new SirTrevorBlock(
+            'text',
+            array('text' => ' ' . $this->htmlToMarkdown($html))
         );
     }
 
