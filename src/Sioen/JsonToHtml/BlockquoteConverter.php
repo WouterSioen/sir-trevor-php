@@ -4,7 +4,7 @@ namespace Sioen\JsonToHtml;
 
 use \Michelf\Markdown;
 
-class BlockquoteConverter implements Converter
+final class BlockquoteConverter implements Converter
 {
     public function toHtml(array $data)
     {

@@ -2,8 +2,10 @@
 
 namespace Sioen\HtmlToJson;
 
-class BaseConverter extends Converter
+final class BaseConverter implements Converter
 {
+    use HtmlToMarkdown;
+
     public function toJson(\DOMElement $node)
     {
         $html = $node->ownerDocument->saveXML($node);

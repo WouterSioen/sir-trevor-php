@@ -13,7 +13,7 @@ use Sioen\HtmlToJson\Converter;
  * @author Wouter Sioen <wouter@woutersioen.be>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  */
-class HtmlToJson
+final class HtmlToJson
 {
     /** @var array */
     private $converters = array();

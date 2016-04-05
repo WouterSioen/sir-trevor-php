@@ -2,8 +2,10 @@
 
 namespace Sioen\HtmlToJson;
 
-class IframeConverter extends Converter
+final class IframeConverter implements Converter
 {
+    use HtmlToMarkdown;
+
     public function toJson(\DOMElement $node)
     {
         $html = $node->ownerDocument->saveXML($node);

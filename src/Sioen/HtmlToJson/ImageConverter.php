@@ -2,8 +2,10 @@
 
 namespace Sioen\HtmlToJson;
 
-class ImageConverter extends Converter
+final class ImageConverter implements Converter
 {
+    use HtmlToMarkdown;
+
     public function toJson(\DOMElement $node)
     {
         return array(

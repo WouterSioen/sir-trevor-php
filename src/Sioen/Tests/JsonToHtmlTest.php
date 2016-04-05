@@ -9,7 +9,7 @@ use Sioen\JsonToHtml\IframeConverter;
 use Sioen\JsonToHtml\ImageConverter;
 use Sioen\JsonToHtml\HeadingConverter;
 
-class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
+final class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
 {
     public function testConvertBlockquoteToHtml()
     {

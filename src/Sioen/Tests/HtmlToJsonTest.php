@@ -7,7 +7,7 @@ use Sioen\HtmlToJson\HeadingConverter;
 use Sioen\HtmlToJson\BlockquoteConverter;
 use Sioen\HtmlToJson\ImageConverter;
 
-class HtmlToJsonTest extends \PHPUnit_Framework_TestCase
+final class HtmlToJsonTest extends \PHPUnit_Framework_TestCase
 {
     public function testConvertHeadingToJson()
     {

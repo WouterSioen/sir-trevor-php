@@ -13,7 +13,7 @@ use Sioen\JsonToHtml\Converter;
  * @author Wouter Sioen <wouter@woutersioen.be>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  */
-class JsonToHtml
+final class JsonToHtml
 {
     /** @var array */
     private $converters = array();

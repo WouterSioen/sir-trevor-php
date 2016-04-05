@@ -2,8 +2,10 @@
 
 namespace Sioen\HtmlToJson;
 
-class ListConverter extends Converter
+final class ListConverter implements Converter
 {
+    use HtmlToMarkdown;
+
     public function toJson(\DOMElement $node)
     {
         $markdown = $this->htmlToMarkdown($node->ownerDocument->saveXML($node));

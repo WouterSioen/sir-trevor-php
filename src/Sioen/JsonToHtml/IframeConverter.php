@@ -2,7 +2,7 @@
 
 namespace Sioen\JsonToHtml;
 
-class IframeConverter implements Converter
+final class IframeConverter implements Converter
 {
     public function toHtml(array $data)
     {

@@ -4,7 +4,7 @@ namespace Sioen\JsonToHtml;
 
 use \Michelf\Markdown;
 
-class BaseConverter implements Converter
+final class BaseConverter implements Converter
 {
     public function toHtml(array $data)
     {

@@ -2,7 +2,7 @@
 
 namespace Sioen\JsonToHtml;
 
-class ImageConverter implements Converter
+final class ImageConverter implements Converter
 {
     public function toHtml(array $data)
     {

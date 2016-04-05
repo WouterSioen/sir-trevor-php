@@ -2,8 +2,10 @@
 
 namespace Sioen\HtmlToJson;
 
-class BlockquoteConverter extends Converter
+final class BlockquoteConverter implements Converter
 {
+    use HtmlToMarkdown;
+
     public function toJson(\DOMElement $node)
     {
         // check if the quote contains a cite
