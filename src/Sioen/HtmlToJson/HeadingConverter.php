@@ -1,10 +1,8 @@
 <?php
 
-namespace Sioen\Types;
+namespace Sioen\HtmlToJson;
 
-use \Michelf\Markdown;
-
-class HeadingConverter extends BaseConverter implements ConverterInterface
+class HeadingConverter extends Converter
 {
     public function toJson(\DOMElement $node)
     {
@@ -21,8 +19,8 @@ class HeadingConverter extends BaseConverter implements ConverterInterface
         );
     }
 
-    public function toHtml(array $data)
+    public function matches(\DomElement $node)
     {
-        return Markdown::defaultTransform('## ' . $data['text']);
+        return $node->nodeName === 'h2';
     }
 }

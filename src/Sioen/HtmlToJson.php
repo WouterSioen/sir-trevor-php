@@ -2,13 +2,13 @@
 
 namespace Sioen;
 
-use Sioen\Types\BlockquoteConverter;
-use Sioen\Types\HeadingConverter;
-use Sioen\Types\IframeConverter;
-use Sioen\Types\ImageConverter;
-use Sioen\Types\ListConverter;
-use Sioen\Types\ParagraphConverter;
-use Sioen\Types\BaseConverter;
+use Sioen\HtmlToJson\BlockquoteConverter;
+use Sioen\HtmlToJson\HeadingConverter;
+use Sioen\HtmlToJson\IframeConverter;
+use Sioen\HtmlToJson\ImageConverter;
+use Sioen\HtmlToJson\ListConverter;
+use Sioen\HtmlToJson\ParagraphConverter;
+use Sioen\HtmlToJson\BaseConverter;
 
 /**
  * Class HtmlToJson
@@ -21,6 +21,19 @@ use Sioen\Types\BaseConverter;
  */
 class HtmlToJson
 {
+    /** @var array */
+    private $converters;
+
+    public function __construct()
+    {
+        $this->converters[] = new HeadingConverter();
+        $this->converters[] = new ListConverter();
+        $this->converters[] = new BlockquoteConverter();
+        $this->converters[] = new IframeConverter();
+        $this->converters[] = new ImageConverter();
+        $this->converters[] = new BaseConverter();
+    }
+
     /**
      * Converts html to the json Sir Trevor requires
      *
@@ -45,7 +58,7 @@ class HtmlToJson
         // loop trough the child nodes and convert them
         if ($body) {
             foreach ($body->childNodes as $node) {
-                $data[] = $this->convert($node->nodeName, $node);
+                $data[] = $this->convert($node);
             }
         }
 
@@ -55,36 +68,15 @@ class HtmlToJson
     /**
      * Converts one node to json
      *
-     * @param string $nodeName
      * @param \DOMElement $node
      * @return array
      */
-    private function convert($nodeName, \DOMElement $node)
+    private function convert(\DOMElement $node)
     {
-        switch ($nodeName) {
-            case 'p':
-                $converter = new ParagraphConverter();
-                break;
-            case 'h2':
-                $converter = new HeadingConverter();
-                break;
-            case 'ul':
-                $converter = new ListConverter();
-                break;
-            case 'blockquote':
-                $converter = new BlockquoteConverter();
-                break;
-            case 'iframe':
-                $converter = new IframeConverter();
-                break;
-            case 'img':
-                $converter = new ImageConverter();
-                break;
-            default:
-                $converter = new BaseConverter();
-                break;
+        foreach ($this->converters as $converter) {
+            if ($converter->matches($node)) {
+                return $converter->toJson($node);
+            }
         }
-
-        return $converter->toJson($node);
     }
 }

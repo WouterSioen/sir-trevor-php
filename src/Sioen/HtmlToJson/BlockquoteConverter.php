@@ -1,10 +1,8 @@
 <?php
 
-namespace Sioen\Types;
+namespace Sioen\HtmlToJson;
 
-use \Michelf\Markdown;
-
-class BlockquoteConverter extends BaseConverter implements ConverterInterface
+class BlockquoteConverter extends Converter
 {
     public function toJson(\DOMElement $node)
     {
@@ -34,21 +32,8 @@ class BlockquoteConverter extends BaseConverter implements ConverterInterface
         );
     }
 
-    public function toHtml(array $data)
+    public function matches(\DomElement $node)
     {
-        $text = $data['text'];
-        $html = '<blockquote>';
-        $html .= Markdown::defaultTransform($text);
-
-        // Add the cite if necessary
-        if (isset($data['cite']) && !empty($data['cite'])) {
-            // remove the indent thats added by Sir Trevor
-            $cite = ltrim($data['cite'], '>');
-            $html .= '<cite>' . Markdown::defaultTransform($cite) . '</cite>';
-        }
-
-        $html .= '</blockquote>';
-
-        return $html;
+        return $node->nodeName === 'blockquote';
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Sioen\Types;
+namespace Sioen\HtmlToJson;
 
-class ListConverter extends BaseConverter implements ConverterInterface
+class ListConverter extends Converter
 {
     public function toJson(\DOMElement $node)
     {
@@ -17,5 +17,10 @@ class ListConverter extends BaseConverter implements ConverterInterface
                 'text' => $markdown,
             )
         );
+    }
+
+    public function matches(\DomElement $node)
+    {
+        return $node->nodeName === 'ul';
     }
 }

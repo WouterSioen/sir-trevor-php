@@ -1,8 +1,8 @@
 <?php
 
-namespace Sioen\Types;
+namespace Sioen\HtmlToJson;
 
-class ImageConverter extends BaseConverter implements ConverterInterface
+class ImageConverter extends Converter
 {
     public function toJson(\DOMElement $node)
     {
@@ -16,8 +16,8 @@ class ImageConverter extends BaseConverter implements ConverterInterface
         );
     }
 
-    public function toHtml(array $data)
+    public function matches(\DomElement $node)
     {
-        return '<img src="' . $data['file']['url'] . '" />' . "\n";
+        return $node->nodeName === 'img';
     }
 }

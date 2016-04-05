@@ -2,12 +2,11 @@
 
 namespace Sioen;
 
-use Sioen\Types\BlockquoteConverter;
-use Sioen\Types\HeadingConverter;
-use Sioen\Types\IframeConverter;
-use Sioen\Types\ImageConverter;
-use Sioen\Types\ListConverter;
-use Sioen\Types\BaseConverter;
+use Sioen\JsonToHtml\BlockquoteConverter;
+use Sioen\JsonToHtml\HeadingConverter;
+use Sioen\JsonToHtml\IframeConverter;
+use Sioen\JsonToHtml\ImageConverter;
+use Sioen\JsonToHtml\BaseConverter;
 
 /**
  * Class JsonToHtml
@@ -20,6 +19,18 @@ use Sioen\Types\BaseConverter;
  */
 class JsonToHtml
 {
+    /** @var array */
+    private $converters;
+
+    public function __construct()
+    {
+        $this->converters[] = new HeadingConverter();
+        $this->converters[] = new BlockquoteConverter();
+        $this->converters[] = new IframeConverter();
+        $this->converters[] = new ImageConverter();
+        $this->converters[] = new BaseConverter();
+    }
+
     /**
      * Converts the outputted json from Sir Trevor to html
      *
@@ -50,27 +61,10 @@ class JsonToHtml
      */
     private function convert($type, array $data)
     {
-        switch ($type) {
-            case 'heading':
-                $converter = new HeadingConverter();
-                break;
-            case 'list':
-                $converter = new ListConverter();
-                break;
-            case 'quote':
-                $converter = new BlockquoteConverter();
-                break;
-            case 'video':
-                $converter = new IframeConverter();
-                break;
-            case 'image':
-                $converter = new ImageConverter();
-                break;
-            default:
-                $converter = new BaseConverter();
-                break;
+        foreach ($this->converters as $converter) {
+            if ($converter->matches($type)) {
+                return $converter->toHtml($data);
+            }
         }
-
-        return $converter->toHtml($data);
     }
 }

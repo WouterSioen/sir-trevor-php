@@ -1,8 +1,8 @@
 <?php
 
-namespace Sioen\Types;
+namespace Sioen\HtmlToJson;
 
-class IframeConverter extends BaseConverter implements ConverterInterface
+class IframeConverter extends Converter
 {
     public function toJson(\DOMElement $node)
     {
@@ -28,28 +28,8 @@ class IframeConverter extends BaseConverter implements ConverterInterface
         }
     }
 
-    public function toHtml(array $data)
+    public function matches(\DomElement $node)
     {
-        // youtube video's
-        $source = $data['source'];
-        $remoteId = $data['remote_id'];
-
-        if ($source == 'youtube') {
-            $html = '<iframe src="//www.youtube.com/embed/' . $remoteId . '?rel=0" ';
-            $html .= 'frameborder="0" allowfullscreen></iframe>' . "\n";
-
-            return $html;
-        }
-
-        // vimeo videos
-        if ($source == 'vimeo') {
-            $html = '<iframe src="//player.vimeo.com/video/' . $remoteId;
-            $html .= '?title=0&amp;byline=0" frameborder="0"></iframe>' . "\n";
-
-            return $html;
-        }
-
-        // fallback
-        return '';
+        return $node->nodeName === 'iframe';
     }
 }
