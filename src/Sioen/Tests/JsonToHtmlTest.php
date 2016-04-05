@@ -11,16 +11,11 @@ use Sioen\JsonToHtml\HeadingConverter;
 
 class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
 {
-    public function testToHtml()
+    public function testConvertBlockquoteToHtml()
     {
         $converter = new JsonToHtml();
         $converter->addConverter(new BlockquoteConverter());
-        $converter->addConverter(new HeadingConverter());
-        $converter->addConverter(new IframeConverter());
-        $converter->addConverter(new ImageConverter());
-        $converter->addConverter(new BaseConverter());
 
-        // let's try a basic json
         $json = json_encode(array(
             'data' => array(array(
                 'type' => 'quote',
@@ -35,7 +30,12 @@ class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
             $html,
             "<blockquote><p>Text</p>\n<cite><p>Cite</p>\n</cite></blockquote>"
         );
+    }
 
+    public function testConvertParagraphToHtml()
+    {
+        $converter = new JsonToHtml();
+        $converter->addConverter(new BaseConverter());
 
         // Lets convert a normal text type that uses the default converter
         $json = json_encode(array(
@@ -48,6 +48,12 @@ class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
         ));
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<p>test</p>\n");
+    }
+
+    public function testConvertVideoToHtml()
+    {
+        $converter = new JsonToHtml();
+        $converter->addConverter(new IframeConverter());
 
         // the video conversion
         $json = json_encode(array(
@@ -64,6 +70,12 @@ class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
             $html,
             "<iframe src=\"//www.youtube.com/embed/4BXpi7056RM?rel=0\" frameborder=\"0\" allowfullscreen></iframe>\n"
         );
+    }
+
+    public function testConvertHeadingToHtml()
+    {
+        $converter = new JsonToHtml();
+        $converter->addConverter(new HeadingConverter());
 
         // The heading
         $json = json_encode(array(
@@ -76,6 +88,12 @@ class JsonToHtmlTest extends \PHPUnit_Framework_TestCase
         ));
         $html = $converter->toHtml($json);
         $this->assertEquals($html, "<h2>test</h2>\n");
+    }
+
+    public function testConvertImageToHtml()
+    {
+        $converter = new JsonToHtml();
+        $converter->addConverter(new ImageConverter());
 
         // images
         $json = json_encode(array(

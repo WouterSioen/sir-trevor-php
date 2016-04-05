@@ -9,7 +9,7 @@ use Sioen\HtmlToJson\ImageConverter;
 
 class HtmlToJsonTest extends \PHPUnit_Framework_TestCase
 {
-    public function testToJson()
+    public function testConvertHeadingToJson()
     {
         $htmlToJson = new HtmlToJson();
         $htmlToJson->addConverter(new HeadingConverter());
@@ -17,19 +17,29 @@ class HtmlToJsonTest extends \PHPUnit_Framework_TestCase
             $htmlToJson->toJson('<h2>Test</h2>'),
             '{"data":[{"type":"heading","data":{"text":" Test"}}]}'
         );
+    }
 
-        // a quote
+    public function testConvertBlockquoteToJson()
+    {
+        $htmlToJson = new HtmlToJson();
         $htmlToJson->addConverter(new BlockquoteConverter());
+
+        // with cite
         $this->assertEquals(
             $htmlToJson->toJson('<blockquote><p>Text</p><cite>Cite</cite></blockquote>'),
             '{"data":[{"type":"quote","data":{"text":" Text","cite":" Cite"}}]}'
         );
 
+        // without cite
         $this->assertEquals(
             $htmlToJson->toJson('<blockquote><p>Text</p></blockquote>'),
             '{"data":[{"type":"quote","data":{"text":" Text","cite":""}}]}'
         );
+    }
 
+    public function testConvertImageToJson()
+    {
+        $htmlToJson = new HtmlToJson();
         $htmlToJson->addConverter(new ImageConverter());
         $this->assertEquals(
             $htmlToJson->toJson('<img src="/path/to/img.jpg" />'),
