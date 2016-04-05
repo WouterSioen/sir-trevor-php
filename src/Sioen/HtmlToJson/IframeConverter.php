@@ -19,7 +19,9 @@ final class IframeConverter implements Converter
                     'remote_id' => $matches[1]
                 )
             );
-        } elseif (preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches)) {
+        }
+
+        if (preg_match('~//player.vimeo.com/video/([^/\?]+).*\?~si', $html, $matches)) {
             return array(
                 'type' => 'video',
                 'data' => array(
