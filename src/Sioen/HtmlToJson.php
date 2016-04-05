@@ -16,7 +16,7 @@ use Sioen\HtmlToJson\Converter;
 class HtmlToJson
 {
     /** @var array */
-    private $converters;
+    private $converters = array();
 
     public function addConverter(Converter $converter)
     {

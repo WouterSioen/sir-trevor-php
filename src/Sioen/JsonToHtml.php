@@ -16,7 +16,7 @@ use Sioen\JsonToHtml\Converter;
 class JsonToHtml
 {
     /** @var array */
-    private $converters;
+    private $converters = array();
 
     public function addConverter(Converter $converter)
     {
