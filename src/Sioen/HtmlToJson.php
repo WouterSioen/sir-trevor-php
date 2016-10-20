@@ -51,7 +51,7 @@ final class HtmlToJson
             }
         }
 
-        return json_encode(array('data' => $data));
+        return json_encode(array('data' => $data), JSON_UNESCAPED_UNICODE);
     }
 
     /**
