@@ -10,14 +10,25 @@ final class ListConverter implements Converter
 
     public function toJson(\DOMElement $node)
     {
-        $markdown = $this->htmlToMarkdown($node->ownerDocument->saveXML($node));
+        $list = $node->ownerDocument->saveXML($node);
+        $list = str_replace('<ul>', '', $list);
+        $list = str_replace('</ul>', '', $list);
+        $list = str_replace('</li>', '', $list);
+        $array = explode("<li>", $list);
 
-        // we need a space in the beginning of each line
-        $markdown = ' ' . str_replace("\n", "\n ", $markdown);
+        $listItems = [];
+        foreach($array as $key => $item){
+            if(!empty($item)){
+                $object = (object) [
+                    'content' => $item
+                ];
+                array_push($listItems,$object);
+            }
+        }
 
         return new SirTrevorBlock(
             'list',
-            array('text' => $markdown)
+            array("format"=> "html", 'listItems' => $listItems)
         );
     }
 
