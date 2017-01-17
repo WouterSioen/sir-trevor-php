@@ -14,7 +14,7 @@ trait HtmlToMarkdown
             $html,
             array(
                 'header_style' => 'atx',
-                'bold_style' => '__',
+                'bold_style' => '**',
                 'italic_style' => '_',
             )
         );
