@@ -9,7 +9,7 @@ final class IngredientsConverter implements Converter
         $html = '<p><strong>Ingredients</strong></p>';
         $html .= '<ul>';
         foreach ($data['listItems'] as $listItem) {
-            $html .= '<li>'.$listItem['content'].'</li>';
+            $html .= '<li itemprop="recipeIngredient">'.$listItem['content'].'</li>';
         }
         $html .= '</ul>';
         return $html;

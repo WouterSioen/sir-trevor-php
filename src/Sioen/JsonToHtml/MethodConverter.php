@@ -6,7 +6,7 @@ final class MethodConverter implements Converter
 {
     public function toHtml(array $data)
     {
-        $html = '<p><strong>Method</strong></p>';
+        $html = '<p itemprop="recipeInstructions"><strong>How to Mix</strong></p>';
         $html .= '<ul>';
         foreach ($data['listItems'] as $listItem) {
             $html .= '<li>'.$listItem['content'].'</li>';
