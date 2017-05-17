@@ -35,6 +35,7 @@ final class HtmlToJson
         $html = preg_replace('~>\s+<~', '><', $html);
         $document = new \DOMDocument();
 
+        libxml_use_internal_errors(true);
         // Load UTF-8 HTML hack (from http://bit.ly/pVDyCt)
         $document->loadHTML('<?xml encoding="UTF-8">' . $html);
         $document->encoding = 'UTF-8';
@@ -51,7 +52,7 @@ final class HtmlToJson
             }
         }
 
-        return json_encode(array('data' => $data));
+        return json_encode(array('data' => $data), JSON_UNESCAPED_UNICODE);
     }
 
     /**
